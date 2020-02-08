@@ -1,4 +1,62 @@
+main {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
 h1 {
     margin-left: 10%;
     font-family: "Montserrat";
+}
+
+div {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.red {
+    background-color: #de0000;
+}
+
+#red-turn-text {
+    color: black;
+    font-family: "open sans";
+    font-size: 60px;
+}
+
+#black-turn-text {
+    font-family: "open sans";
+    font-size: 60px;
+    color: lightgray;
+}
+
+.black-piece {
+    margin-right: auto;
+    margin-left: auto;
+    width: 0px;
+    background-color: black;
+    padding: 20px;
+    border: 1px solid black;
+    border-radius: 100px;
+    font-size: 0px;
+}
+
+.red-piece {
+    margin-right: auto;
+    margin-left: auto;
+    width: 0px;
+    background-color: red;
+    padding: 20px;
+    border: 1px solid red;
+    border-radius: 100px;
+    font-size: 0px;
+}
+
+td {
+    text-align: center;
+    background-color: #1f1f1f;
+    width: 65px;
+    height: 65px;
 }

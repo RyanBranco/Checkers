@@ -1,18 +1,46 @@
 /*----------- Game State Data ----------*/
 
-// 2 objects representing both players named red / black (that each have):
-//      turn: false / true,
-//      pieces: [], <-- this is the id's of the pieces
+const red = {
+    pieces: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+}
 
-// have a board array of objects:      ***after a lot of thinking having a board object could be used to pair the id's of the pieces 
-//      square id: num,                     to the id's of the squares
-//      
+const black = {
+    pieces: [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+}
+
+const board = [   
+    null, null, null, null, null, null, null, null,
+    null, null, null, null, null, null, null, null,
+    null, null, null, null, null, null, null, null,
+    null, null, null, null, null, null, null, null,
+    null, null, null, null, null, null, null, null,
+    null, null, null, null, null, null, null, null,
+    null, null, null, null, null, null, null, null,
+    null, null, null, null, null, null, null, null
+]
+
+let turn = true;
+
 
 /*---------- Cached Variables ----------*/
 
-// board squares
-// pieces
-// text on the side 
+const cells = document.querySelectorAll("td");
+const piece = document.querySelectorAll("p");
+const redTurnText = document.querySelector("#red-turn-text");
+const blackSidetext = document.querySelector("#black-turn-text");
+
+/*---------- Event Listeners ----------*/
+for (let i = 0; i < piece.length; i++) {
+    piece[i].addEventListener("click", (event) => {
+        let pieceId = piece[i].getAttribute("id");
+    })
+};
+
+for (let i = 0; i < board.length; i++) {
+    cells[i].addEventListener("click", (event) => {
+        
+    })
+}
 
 /*---------- Logic ----------*/
 
