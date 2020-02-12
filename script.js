@@ -60,7 +60,6 @@ function giveEventListeners() {
 function getAvailableSpaces(event) {
     pieceId = parseInt(event.target.id);
     indexOfBoardPiece = parse(pieceId);
-
     if (turn && pieceId < 12) {
         for (let i = 0; i < redsPieces.length; i++) {
             if (board[indexOfBoardPiece + 7] === null  && cells[indexOfBoardPiece + 7].classList.contains("red") !== true) {
