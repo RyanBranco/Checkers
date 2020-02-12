@@ -17,7 +17,7 @@ div {
 }
 
 .red {
-    background-color: #de0000;
+    background-color: #F0D2B4;
 }
 
 #red-turn-text {
@@ -56,7 +56,7 @@ div {
 
 td {
     text-align: center;
-    background-color: #1f1f1f;
+    background-color: #BA7A3A;
     width: 65px;
     height: 65px;
 }
