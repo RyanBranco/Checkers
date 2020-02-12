@@ -1,5 +1,6 @@
 /*----------- Game State Data ----------*/
 
+
 const red = {
     pieces: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 }
@@ -37,77 +38,86 @@ const blackTurntext = document.querySelector("#black-turn-text");
 /*---------- Event Listeners ----------*/
 
 // Gives the pieces on "click" (for whoevers turn it is) and assigns the proper id to it
-function givePiecesClick() {
+function giveClicks() {
     if (turn) {
         for (let i = 0; i < red.pieces.length; i++) {
             piece[i].addEventListener("click", (event) => {
                 const pieceId = event.target.getAttribute("id");
-                giveCellsClick(pieceId);
+                let parsedId = parse(pieceId);
+                if (board[parsedId + 7] === null && cells[parsedId + 7].classList.contains("red") !== true) {
+                    piece[pieceId].style.border = "3px solid green";
+                    cells[parsedId + 7].addEventListener("click", giveCellsClicks)
+                } 
+                if (board[parsedId + 9] === null && cells[parsedId + 9].classList.contains("red") !== true) {
+                    piece[pieceId].style.border = "3px solid green";
+                    cells[parsedId + 9].addEventListener("click", giveCellsClicks);
+                }
             })
         }
-    } else if (turn === false) {
+    } else {
         for (let i = 0; i < black.pieces.length; i++) {
             piece[red.pieces.length + i].addEventListener("click", (event) => {
                 const pieceId = event.target.getAttribute("id");
-                giveCellsClick(pieceId);
+                let parsedId = parse(pieceId);
+                if (board[parsedId - 7] === null && cells[parsedId - 7].classList.contains("red") !== true) {
+                piece[pieceId].style.border = "3px solid green";
+                cells[parsedId - 7].addEventListener("click", giveCellsClicks)
+                } 
+                if (board[parsedId - 9] === null && cells[parsedId - 9].classList.contains("red") !== true) {
+                piece[pieceId].style.border = "3px solid green";
+                cells[parsedId - 9].addEventListener("click", giveCellsClicks)
+                }
             })
         }
     }
-}
 
-// Gives the cells on "click" (for whoevers turn it is)
-function giveCellsClick(pieceId) {
-    let parsedId = parse(pieceId);
-
-    // Helps normal red pieces move
-    if (turn && board[parsedId + 7] === null && cells[parsedId + 7].classList.contains("red") !== true) {
-        piece[pieceId].style.border = "3px solid green";
-        if (turn && board[parsedId + 9] === null && cells[parsedId + 9].classList.contains("red") !== true) {
-            cells[parsedId + 9].addEventListener("click", function giveClickToNine(event) {
+    function giveCellsClicks() {
+        if (turn) {
+            if (board[parsedId + 7] === null && cells[parsedId + 7].classList.contains("red") !== true) {   
+                event.target.innerHTML = `<p class="red-piece" id="${pieceId}"></p>`;
+                cells[parsedId].innerHTML = "";
+                piece[pieceId].border = "none";
+                deleteEventListeners(parsedId + 7);
+                changeData(pieceId, parsedId, parsedId + 7);
+            }
+            if (board[parsedId + 9] === null && cells[parsedId + 9].classList.contains("red") !== true) {
                 event.target.innerHTML = `<p class="red-piece" id="${pieceId}"></p>`;
                 cells[parsedId].innerHTML = "";
                 piece[pieceId].border = "none";
                 deleteEventListeners(parsedId + 9);
                 changeData(pieceId, parsedId, parsedId + 9);
-            })
-        }
-        cells[parsedId + 7].addEventListener("click", function giveClickToSeven(event) {
-            event.target.innerHTML = `<p class="red-piece" id="${pieceId}"></p>`;
-            cells[parsedId].innerHTML = "";
-            piece[pieceId].border = "none";
-            deleteEventListeners(parsedId + 7);
-            changeData(pieceId, parsedId, parsedId + 7);
-        })
-    } else if (turn === false && board[parsedId - 7] === null && cells[parsedId - 7].classList.contains("red") !== true) {
-        piece[pieceId].style.border = "3px solid green";
-        if (turn === false && board[parsedId - 9] === null && cells[parsedId - 9].classList.contains("red") !== true) {
-            cells[parsedId - 9].addEventListener("click", function giveClickToNine(event) {
+            }
+        } else {
+            if (board[parsedId - 7] === null && cells[parsedId - 7].classList.contains("red") !== true) {
+                event.target.innerHTML = `<p class="black-piece" id="${pieceId}"></p>`;
+                cells[parsedId].innerHTML = "";
+                piece[pieceId].border = "none";
+                deleteEventListeners(parsedId - 7);
+                changeData(pieceId, parsedId, parsedId - 7);
+            }
+            if (board[parsedId - 9] === null && cells[parsedId - 9].classList.contains("red") !== true) {
                 event.target.innerHTML = `<p class="black-piece" id="${pieceId}"></p>`;
                 cells[parsedId].innerHTML = "";
                 piece[pieceId].border = "none";
                 deleteEventListeners(parsedId - 9);
                 changeData(pieceId, parsedId, parsedId - 9);
-            })
+            }
         }
-        cells[parsedId - 7].addEventListener("click", function giveClickToSeven(event) {
-            event.target.innerHTML = `<p class="black-piece" id="${pieceId}"></p>`;
-            cells[parsedId].innerHTML = "";
-            piece[pieceId].border = "none";
-            deleteEventListeners(parsedId - 7);
-            changeData(pieceId, parsedId, parsedId - 7);
-        })
-    } 
+    }
 }
+
+// function handler(num, pieceId, parsedId, element) {
+//     function myListener(event) {
+//         let children = this.children
+//             console.log("THIS IS ", children.item(0))
+//             if(num === 9) {
+//                 giveClickToNine(event, pieceId, parsedId)
+//             }
+//     }   
+//     element.addEventListener('click', myListener)
+// }
 
 /*---------- Logic ----------*/
-
-// removes the event listeners that were just added
-
-
-/***** THERE IS A BUG IN HERE VVVVVVV FIX IT! *****/
-function deleteEventListeners(cellIdOne) {
-   
-}
 
 // Changes the board states data on the back end
 function changeData(pieceId, parsedId, modifiedParse) {
@@ -139,7 +149,7 @@ function checkForWin() {
         redTurnText.textContent = "";
         blackTurntext.textContent = "BLACK WINS!"
     }
-    givePiecesClick();
+    giveClicks();
 }
 
-givePiecesClick();
+giveClicks();
