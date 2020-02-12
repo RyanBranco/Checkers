@@ -1,6 +1,6 @@
 /*----------- Game State Data ----------*/
 
-const board = [   
+const board = [
     null, 0, null, 1, null, 2, null, 3,
     4, null, 5, null, 6, null, 7, null,
     null, 8, null, 9, null, 10, null, 11,
@@ -14,46 +14,115 @@ const board = [
 /*---------- Cached Variables ----------*/
 
 // parses pieceId's and returns the index of that pieces place on the board
-let parse = function(pieceId) {
+let parse = function (pieceId) {
     let parsed = parseInt(pieceId);
     return board.indexOf(parsed);
 };
+
+/* html referenes */
 const cells = document.querySelectorAll("td");
-const piece = document.querySelectorAll("p");
+const redsPieces = document.querySelectorAll("p");
+const blacksPieces = document.querySelectorAll("span")
 const redTurnText = document.querySelector("#red-turn-text");
 const blackTurntext = document.querySelector("#black-turn-text");
+
+/* player properties */
 let turn = true;
 let redScore = 12;
 let blackScore = 12;
-let pieceIndexOfBoard;
-let pieceId
+
+/* piece properties */
+let seventhSpace = false;
+let ninthSpace = false;
+let fourteenthSpace = false;
+let eighteenthSpace = false;
+let pieceId = false;
+let indexOfBoardPiece = false;
 
 /*---------- Event Listeners ----------*/
 
-for (let i = 0; i < piece.length; i++) {
-    piece[i].addEventListener("click", (event) => {
-        pieceId = piece[i].getAttribute("id");
-        pieceIndexOfBoard = parse(pieceId);
-        selectPiece();
-    })
+function giveEventListeners() {
+    if (turn) {
+        for (let i = 0; i < redsPieces.length; i++) {
+            redsPieces[i].addEventListener("click", getAvailableSpaces)
+        }
+    }
+
+    if (turn == false) {
+        for (let i = 0; i < blacksPieces.length; i++) {
+            blacksPieces[i].addEventListener("click", getAvailableSpaces)
+        }
+    }
 }
 
 /*---------- Logic ----------*/
 
-function selectPiece() {
-    for (let i = 0; i < piece.length; i++) {
-        piece[i].style.border = "1px solid white";
-   }
-    piece[pieceId].style.border = "3px solid green";
-    getAvailableSpaces();
+function getAvailableSpaces(event) {
+    pieceId = parseInt(event.target.id);
+    indexOfBoardPiece = parse(pieceId);
+
+    if (turn && pieceId < 12) {
+        for (let i = 0; i < redsPieces.length; i++) {
+            if (board[indexOfBoardPiece + 7] === null  && cells[indexOfBoardPiece + 7].classList.contains("red") !== true) {
+                seventhSpace = true;
+                redsPieces[i].style.border = "1px solid white";
+                redsPieces[pieceId].style.border = "3px solid green";
+            }
+            if (board[indexOfBoardPiece + 9] === null && cells[indexOfBoardPiece + 9].classList.contains("red") !== true) {
+                ninthSpace = true;
+                redsPieces[i].style.border = "1px solid white";
+                redsPieces[pieceId].style.border = "3px solid green";
+            }
+            if (board[indexOfBoardPiece + 14] === null && cells[indexOfBoardPiece + 14].classList.contains("red") !== true && board[indexOfBoardPiece + 7] >= 12) {
+                fourteenthSpace = true;
+                redsPieces[i].style.border = "1px solid white";
+                redsPieces[pieceId].style.border = "3px solid green";
+            }
+            if (board[indexOfBoardPiece + 18] === null && cells[indexOfBoardPiece + 18].classList.contains("red") !== true && board[indexOfBoardPiece + 9] >= 12) {
+                eighteenthSpace = true;
+                redsPieces[i].style.border = "1px solid white";
+                redsPieces[pieceId].style.border = "3px solid green";
+            }
+        }
+        move();
+    }
+
+    if (turn === false && pieceId >= 12) {
+        for (let i = 0; i < blacksPieces.length; i++) {
+            if (board[indexOfBoardPiece - 7] === null  && cells[indexOfBoardPiece - 7].classList.contains("red") !== true) {
+                seventhSpace = true;
+                blacksPieces[i].style.border = "1px solid white";
+                blacksPieces[pieceId].style.border = "3px solid green";
+            }
+            if (board[indexOfBoardPiece - 9] === null && cells[indexOfBoardPiece - 9].classList.contains("red") !== true) {
+                ninthSpace = true;
+                blacksPieces[i].style.border = "1px solid white";
+                blacksPieces[pieceId].style.border = "3px solid green";
+            }
+            if (board[indexOfBoardPiece - 14] === null && cells[indexOfBoardPiece - 14].classList.contains("red") !== true && board[indexOfBoardPiece - 7] < 12) {
+                fourteenthSpace = true;
+                blacksPieces[i].style.border = "1px solid white";
+                blacksPieces[pieceId].style.border = "3px solid green";
+            }
+            if (board[indexOfBoardPiece - 18] === null && cells[indexOfBoardPiece - 18].classList.contains("red") !== true && board[indexOfBoardPiece - 9] < 12) {
+                eighteenthSpace = true;
+                blacksPieces[i].style.border = "1px solid white";
+                blacksPieces[pieceId].style.border = "3px solid green";
+            }
+        }
+        move();
+    }
 }
 
-function getAvailableSpaces() {
-    console.log(pieceId);
-    console.log(pieceIndexOfBoard);
+function move() {
+    if (turn && pieceId < 12) {
+
+    }
+
+    if (turn === false && pieceId >= 12) {
+
+    }
 }
-
-
 
 // Changes the board states data on the back end
 function changeData() {
@@ -78,11 +147,14 @@ function changePlayer() {
 
 // Checks every turn for a win
 function checkForWin() {
-    if ( black.pieces.length === 0) {
+    if (blackScore === 0) {
         blackTurntext.textContent = "";
         redTurnText.textContent = "RED WINS!";
-    } else if (red.pieces.length === 0) {
+    } else if (redScore === 0) {
         redTurnText.textContent = "";
         blackTurntext.textContent = "BLACK WINS!"
     }
+    giveEventListeners();
 }
+
+giveEventListeners();
