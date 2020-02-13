@@ -133,79 +133,189 @@ function giveCellsClick() {
     if (turn === false && pieceId >= 12) {
         if (seventhSpace) {
             cells[indexOfBoardPiece - 7].addEventListener("click", seventhMove);
+            total += 1;
         }
         if (ninthSpace) {
             cells[indexOfBoardPiece - 9].addEventListener("click", ninthMove);
+            total += 2;
         }
         if (fourteenthSpace) {
             cells[indexOfBoardPiece - 14].addEventListener("click", fourteenthMove);
+            total += 3;
         }
         if (eighteenthSpace) {
             cells[indexOfBoardPiece - 18].addEventListener("click", eighteenthMove);
+            total += 4;
         }
     }
+
 }
 
 function seventhMove() {
-    if (turn) {
+    if (turn && pieceId < 12) {
         cells[indexOfBoardPiece].innerHTML = "";
         cells[indexOfBoardPiece + 7].innerHTML = `<p class="red-piece" id="${pieceId}"></p>`;
+        if (seventhSpace) {
+            cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
+        }
+        if (ninthSpace) {
+            cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
+        }
+        if (fourteenthSpace) {
+            cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
+        }
+        if (eighteenthSpace) {
+            cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
+        }
         changeData(indexOfBoardPiece, indexOfBoardPiece + 7);
     }
 
-    if (turn === false) {
+    if (turn === false && pieceId >= 12) {
         cells[indexOfBoardPiece].innerHTML = "";
         cells[indexOfBoardPiece - 7].innerHTML = `<span class="black-piece" id="${pieceId}"></span>`;
+        if (seventhSpace) {
+            cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
+        }
+        if (ninthSpace) {
+            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove) 
+        }
+        if (fourteenthSpace) {
+            cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
+        }
+        if (eighteenthSpace) {
+            cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
+        }
         changeData(indexOfBoardPiece, indexOfBoardPiece - 7);
     }
 }
 
 function ninthMove() {
-    if (turn) {
+    if (turn && pieceId < 12) {
         cells[indexOfBoardPiece].innerHTML = "";
         cells[indexOfBoardPiece + 9].innerHTML = `<p class="red-piece" id="${pieceId}"></p>`;
+        if (seventhSpace) {
+            cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
+        }
+        if (ninthSpace) {
+            cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
+        }
+        if (fourteenthSpace) {
+            cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
+        }
+        if (eighteenthSpace) {
+            cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
+        }
         changeData(indexOfBoardPiece, indexOfBoardPiece + 9);
     }
 
-    if (turn === false) {
+    if (turn === false && pieceId >= 12) {
         cells[indexOfBoardPiece].innerHTML = "";
         cells[indexOfBoardPiece - 9].innerHTML = `<span class="black-piece" id="${pieceId}"></span>`;
+        if (seventhSpace) {
+            cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
+        }
+        if (ninthSpace) {
+            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove) 
+        }
+        if (fourteenthSpace) {
+            cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
+        }
+        if (eighteenthSpace) {
+            cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
+        }
         changeData(indexOfBoardPiece, indexOfBoardPiece - 9);    
     }
 }
 
 function fourteenthMove() {
-    if (turn) {
+    if (turn && pieceId < 12) {
         cells[indexOfBoardPiece].innerHTML = "";
         cells[indexOfBoardPiece + 14].innerHTML = `<p class="red-piece" id="${pieceId}"></p>`;
-        changeData(indexOfBoardPiece, indexOfBoardPiece + 14);
+        if (seventhSpace) {
+            cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
+        }
+        if (ninthSpace) {
+            cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
+        }
+        if (fourteenthSpace) {
+            cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
+        }
+        if (eighteenthSpace) {
+            cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
+        }
+        changeData(indexOfBoardPiece, indexOfBoardPiece + 14, indexOfBoardPiece + 7);
     }
 
-    if (turn === false) {
+    if (turn === false && pieceId >= 12) {
         cells[indexOfBoardPiece].innerHTML = "";
         cells[indexOfBoardPiece - 14].innerHTML = `<span class="black-piece" id="${pieceId}"></span>`;
-        changeData(indexOfBoardPiece, indexOfBoardPiece - 14);   
+        if (seventhSpace) {
+            cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
+        }
+        if (ninthSpace) {
+            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove) 
+        }
+        if (fourteenthSpace) {
+            cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
+        }
+        if (eighteenthSpace) {
+            cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
+        }
+        changeData(indexOfBoardPiece, indexOfBoardPiece - 14, indexOfBoardPiece - 7);   
     }
 }
 
 function eighteenthMove() {
-    if (turn) {
+    if (turn && pieceId < 12) {
         cells[indexOfBoardPiece].innerHTML = "";
         cells[indexOfBoardPiece + 18].innerHTML = `<p class="red-piece" id="${pieceId}"></p>`;
-        changeData(indexOfBoardPiece, indexOfBoardPiece + 18);
+        if (seventhSpace) {
+            cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
+        }
+        if (ninthSpace) {
+            cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
+        }
+        if (fourteenthSpace) {
+            cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
+        }
+        if (eighteenthSpace) {
+            cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
+        }
+        changeData(indexOfBoardPiece, indexOfBoardPiece + 18, indexOfBoardPiece + 9);
     }
 
-    if (turn === false) {
+    if (turn === false && pieceId >= 12) {
         cells[indexOfBoardPiece].innerHTML = "";
         cells[indexOfBoardPiece - 18].innerHTML = `<span class="black-piece" id="${pieceId}"></span>`;
-        changeData(indexOfBoardPiece, indexOfBoardPiece - 18);   
+        if (seventhSpace) {
+            cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
+        }
+        if (ninthSpace) {
+            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove) 
+        }
+        if (fourteenthSpace) {
+            cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
+        }
+        if (eighteenthSpace) {
+            cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
+        }
+        changeData(indexOfBoardPiece, indexOfBoardPiece - 18, indexOfBoardPiece - 9);   
     }
 }
 
 // Changes the board states data on the back end
-function changeData(indexOfBoardPiece, modifiedIndex) {
+function changeData(indexOfBoardPiece, modifiedIndex, removePiece) {
     board[indexOfBoardPiece] = null;
     board[modifiedIndex] = parseInt(indexOfBoardPiece);
+    if (removePiece) {
+        board[removePiece] = null;
+        if (turn) {
+            blackScore--
+        }
+        if (turn === false) {
+            redScore--
+        }
+    }
     changePlayer();
 }
 
@@ -234,5 +344,4 @@ function checkForWin() {
     }
     givePiecesEventListeners();
 }
-
 givePiecesEventListeners();
