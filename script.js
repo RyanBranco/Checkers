@@ -32,16 +32,17 @@ let redScore = 12;
 let blackScore = 12;
 
 /* piece properties */
+let pieceId;
+let indexOfBoardPiece;
+let isKing = false;
 let seventhSpace = false;
 let ninthSpace = false;
 let fourteenthSpace = false;
 let eighteenthSpace = false;
-let pieceId = false;
-let indexOfBoardPiece = false;
 
 /*---------- Event Listeners ----------*/
 
-function giveEventListeners() {
+function givePiecesEventListeners() {
     if (turn) {
         for (let i = 0; i < redsPieces.length; i++) {
             redsPieces[i].addEventListener("click", getAvailableSpaces)
@@ -83,7 +84,7 @@ function getAvailableSpaces(event) {
                 redsPieces[pieceId].style.border = "3px solid green";
             }
         }
-        move();
+        giveCellsClick();
     }
 
     if (turn === false && pieceId >= 12) {
@@ -98,35 +99,113 @@ function getAvailableSpaces(event) {
                 blacksPieces[i].style.border = "1px solid white";
                 blacksPieces[pieceId].style.border = "3px solid green";
             }
-            if (board[indexOfBoardPiece - 14] === null && cells[indexOfBoardPiece - 14].classList.contains("red") !== true && board[indexOfBoardPiece - 7] < 12) {
+            if (board[indexOfBoardPiece - 14] === null && cells[indexOfBoardPiece - 14].classList.contains("red") !== true && board[indexOfBoardPiece - 7] < 12 && board[indexOfBoardPiece - 7] !== null) {
                 fourteenthSpace = true;
                 blacksPieces[i].style.border = "1px solid white";
                 blacksPieces[pieceId].style.border = "3px solid green";
             }
-            if (board[indexOfBoardPiece - 18] === null && cells[indexOfBoardPiece - 18].classList.contains("red") !== true && board[indexOfBoardPiece - 9] < 12) {
+            if (board[indexOfBoardPiece - 18] === null && cells[indexOfBoardPiece - 18].classList.contains("red") !== true && board[indexOfBoardPiece - 9] < 12 && board[indexOfBoardPiece - 7] !== null) {
                 eighteenthSpace = true;
                 blacksPieces[i].style.border = "1px solid white";
                 blacksPieces[pieceId].style.border = "3px solid green";
             }
         }
-        move();
+        giveCellsClick();
     }
 }
 
-function move() {
+function giveCellsClick() {
     if (turn && pieceId < 12) {
-
+        if (seventhSpace) {
+            cells[indexOfBoardPiece + 7].addEventListener("click", seventhMove);
+        }
+        if (ninthSpace) {
+            cells[indexOfBoardPiece + 9].addEventListener("click", ninthMove);
+        }
+        if (fourteenthSpace) {
+            cells[indexOfBoardPiece + 14].addEventListener("click", fourteenthMove);
+        }
+        if (eighteenthSpace) {
+            cells[indexOfBoardPiece + 18].addEventListener("click", eighteenthMove);
+        }
     }
 
     if (turn === false && pieceId >= 12) {
+        if (seventhSpace) {
+            cells[indexOfBoardPiece - 7].addEventListener("click", seventhMove);
+        }
+        if (ninthSpace) {
+            cells[indexOfBoardPiece - 9].addEventListener("click", ninthMove);
+        }
+        if (fourteenthSpace) {
+            cells[indexOfBoardPiece - 14].addEventListener("click", fourteenthMove);
+        }
+        if (eighteenthSpace) {
+            cells[indexOfBoardPiece - 18].addEventListener("click", eighteenthMove);
+        }
+    }
+}
 
+function seventhMove() {
+    if (turn) {
+        cells[indexOfBoardPiece].innerHTML = "";
+        cells[indexOfBoardPiece + 7].innerHTML = `<p class="red-piece" id="${pieceId}"></p>`;
+        changeData(indexOfBoardPiece, indexOfBoardPiece + 7);
+    }
+
+    if (turn === false) {
+        cells[indexOfBoardPiece].innerHTML = "";
+        cells[indexOfBoardPiece - 7].innerHTML = `<span class="black-piece" id="${pieceId}"></span>`;
+        changeData(indexOfBoardPiece, indexOfBoardPiece - 7);
+    }
+}
+
+function ninthMove() {
+    if (turn) {
+        cells[indexOfBoardPiece].innerHTML = "";
+        cells[indexOfBoardPiece + 9].innerHTML = `<p class="red-piece" id="${pieceId}"></p>`;
+        changeData(indexOfBoardPiece, indexOfBoardPiece + 9);
+    }
+
+    if (turn === false) {
+        cells[indexOfBoardPiece].innerHTML = "";
+        cells[indexOfBoardPiece - 9].innerHTML = `<span class="black-piece" id="${pieceId}"></span>`;
+        changeData(indexOfBoardPiece, indexOfBoardPiece - 9);    
+    }
+}
+
+function fourteenthMove() {
+    if (turn) {
+        cells[indexOfBoardPiece].innerHTML = "";
+        cells[indexOfBoardPiece + 14].innerHTML = `<p class="red-piece" id="${pieceId}"></p>`;
+        changeData(indexOfBoardPiece, indexOfBoardPiece + 14);
+    }
+
+    if (turn === false) {
+        cells[indexOfBoardPiece].innerHTML = "";
+        cells[indexOfBoardPiece - 14].innerHTML = `<span class="black-piece" id="${pieceId}"></span>`;
+        changeData(indexOfBoardPiece, indexOfBoardPiece - 14);   
+    }
+}
+
+function eighteenthMove() {
+    if (turn) {
+        cells[indexOfBoardPiece].innerHTML = "";
+        cells[indexOfBoardPiece + 18].innerHTML = `<p class="red-piece" id="${pieceId}"></p>`;
+        changeData(indexOfBoardPiece, indexOfBoardPiece + 18);
+    }
+
+    if (turn === false) {
+        cells[indexOfBoardPiece].innerHTML = "";
+        cells[indexOfBoardPiece - 18].innerHTML = `<span class="black-piece" id="${pieceId}"></span>`;
+        changeData(indexOfBoardPiece, indexOfBoardPiece - 18);   
     }
 }
 
 // Changes the board states data on the back end
-function changeData() {
-    board[parsedId] = null;
-    board[modifiedParse] = parseInt(pieceId);
+function changeData(indexOfBoardPiece, modifiedIndex) {
+    board[indexOfBoardPiece] = null;
+    board[modifiedIndex] = parseInt(indexOfBoardPiece);
     changePlayer();
 }
 
@@ -153,7 +232,7 @@ function checkForWin() {
         redTurnText.textContent = "";
         blackTurntext.textContent = "BLACK WINS!"
     }
-    giveEventListeners();
+    givePiecesEventListeners();
 }
 
-giveEventListeners();
+givePiecesEventListeners();
