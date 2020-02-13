@@ -21,8 +21,8 @@ let parse = function (pieceId) {
 
 /* html referenes */
 const cells = document.querySelectorAll("td");
-const redsPieces = document.querySelectorAll("p");
-const blacksPieces = document.querySelectorAll("span")
+let redsPieces = document.querySelectorAll("p");
+let blacksPieces = document.querySelectorAll("span")
 const redTurnText = document.querySelector("#red-turn-text");
 const blackTurntext = document.querySelector("#black-turn-text");
 
@@ -71,36 +71,44 @@ function getAvailableSpaces(event) {
         if (tempSeven[0]) {
             cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove)
             tempSeven.pop();
+            seventhSpace = false;
         }
         if (tempNine[0]) {
             cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove)
             tempNine.pop();
+            ninthSpace = false;
         }
         if (tempFourteen[0]) {
             cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove)
             tempFourteen.pop();
+            fourteenthSpace = false;
         }
         if (tempEighteen[0]) {
-            cells[indexOfBoardPiece + 18].removeEventListener("click", seventeenthMove)
+            cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove)
             tempEighteen.pop();
+            eighteenthSpace = false;
         }
     }
     if (turn === false && pieceId >= 12) {
         if (tempSeven[0]) {
             cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
             tempSeven.pop();
+            seventhSpace = false;
         }
         if (tempNine[0]) {
             cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
             tempNine.pop();
+            ninthSpace = false;
         }
         if (tempFourteen[0]) {
             cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
             tempFourteen.pop();
+            fourteenthSpace = false;
         }
         if (tempEighteen[0]) {
-            cells[indexOfBoardPiece - 18].removeEventListener("click", seventeenthMove)
+            cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
             tempEighteen.pop();
+            eighteenthSpace = false;
         }
     }
 
@@ -111,22 +119,22 @@ function getAvailableSpaces(event) {
             if (board[indexOfBoardPiece + 7] === null && cells[indexOfBoardPiece + 7].classList.contains("red") !== true) {
                 seventhSpace = true;
                 redsPieces[i].style.border = "1px solid white";
-                redsPieces[pieceId].style.border = "3px solid green";
+                document.getElementById(pieceId).style.border = "3px solid green";
             }
             if (board[indexOfBoardPiece + 9] === null && cells[indexOfBoardPiece + 9].classList.contains("red") !== true) {
                 ninthSpace = true;
                 redsPieces[i].style.border = "1px solid white";
-                redsPieces[pieceId].style.border = "3px solid green";
+                document.getElementById(pieceId).style.border = "3px solid green";
             }
             if (board[indexOfBoardPiece + 14] === null && cells[indexOfBoardPiece + 14].classList.contains("red") !== true && board[indexOfBoardPiece + 7] >= 12) {
                 fourteenthSpace = true;
                 redsPieces[i].style.border = "1px solid white";
-                redsPieces[pieceId].style.border = "3px solid green";
+                document.getElementById(pieceId).style.border = "3px solid green";
             }
             if (board[indexOfBoardPiece + 18] === null && cells[indexOfBoardPiece + 18].classList.contains("red") !== true && board[indexOfBoardPiece + 9] >= 12) {
                 eighteenthSpace = true;
                 redsPieces[i].style.border = "1px solid white";
-                redsPieces[pieceId].style.border = "3px solid green";
+                document.getElementById(pieceId).style.border = "3px solid green";
             }
         }
         giveCellsClick();
@@ -137,22 +145,22 @@ function getAvailableSpaces(event) {
             if (board[indexOfBoardPiece - 7] === null && cells[indexOfBoardPiece - 7].classList.contains("red") !== true) {
                 seventhSpace = true;
                 blacksPieces[i].style.border = "1px solid white";
-                blacksPieces[pieceId].style.border = "3px solid green";
+                document.getElementById(pieceId).style.border = "3px solid green";
             }
             if (board[indexOfBoardPiece - 9] === null && cells[indexOfBoardPiece - 9].classList.contains("red") !== true) {
                 ninthSpace = true;
                 blacksPieces[i].style.border = "1px solid white";
-                blacksPieces[pieceId].style.border = "3px solid green";
+                document.getElementById(pieceId).style.border = "3px solid green";
             }
             if (board[indexOfBoardPiece - 14] === null && cells[indexOfBoardPiece - 14].classList.contains("red") !== true && board[indexOfBoardPiece - 7] < 12 && board[indexOfBoardPiece - 7] !== null) {
                 fourteenthSpace = true;
                 blacksPieces[i].style.border = "1px solid white";
-                blacksPieces[pieceId].style.border = "3px solid green";
+                document.getElementById(pieceId).style.border = "3px solid green";
             }
-            if (board[indexOfBoardPiece - 18] === null && cells[indexOfBoardPiece - 18].classList.contains("red") !== true && board[indexOfBoardPiece - 9] < 12 && board[indexOfBoardPiece - 7] !== null) {
+            if (board[indexOfBoardPiece - 18] === null && cells[indexOfBoardPiece - 18].classList.contains("red") !== true && board[indexOfBoardPiece - 9] < 12 && board[indexOfBoardPiece - 9] !== null) {
                 eighteenthSpace = true;
                 blacksPieces[i].style.border = "1px solid white";
-                blacksPieces[pieceId].style.border = "3px solid green";
+                document.getElementById(pieceId).style.border = "3px solid green";
             }
         }
         giveCellsClick();
@@ -210,41 +218,56 @@ function giveCellsClick() {
     console.log("tempNine: " + tempNine);
     console.log("tempFourteen: " + tempFourteen);
     console.log("tempEighteen: " + tempEighteen);
+    console.log("")
 }
 
 function seventhMove() {
     if (turn && pieceId < 12) {
+        document.getElementById(pieceId).remove();
         cells[indexOfBoardPiece].innerHTML = "";
         cells[indexOfBoardPiece + 7].innerHTML = `<p class="red-piece" id="${pieceId}"></p>`;
+        redsPieces = document.querySelectorAll("p");
+        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
         if (seventhSpace) {
             cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
+            tempSeven.pop();
         }
         if (ninthSpace) {
             cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
+            tempNine.pop();
         }
         if (fourteenthSpace) {
             cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
+            tempFourteen.pop();
         }
         if (eighteenthSpace) {
             cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
+            tempEighteen.pop();
         }
         changeData(indexOfBoardPiece, indexOfBoardPiece + 7);
     }
 
     if (turn === false && pieceId >= 12) {
+        document.getElementById(pieceId).remove();
         cells[indexOfBoardPiece].innerHTML = "";
         cells[indexOfBoardPiece - 7].innerHTML = `<span class="black-piece" id="${pieceId}"></span>`;
+        blacksPieces = document.querySelectorAll("span");
+        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
         if (seventhSpace) {
             cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
+            tempSeven.pop();
         }
         if (ninthSpace) {
             cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
+            tempNine.pop();
         }
         if (fourteenthSpace) {
             cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
+            tempFourteen.pop();
         }
         if (eighteenthSpace) {
             cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
+            tempEighteen.pop();
         }
         changeData(indexOfBoardPiece, indexOfBoardPiece - 7);
     }
@@ -252,37 +275,51 @@ function seventhMove() {
 
 function ninthMove() {
     if (turn && pieceId < 12) {
+        document.getElementById(pieceId).remove();
         cells[indexOfBoardPiece].innerHTML = "";
         cells[indexOfBoardPiece + 9].innerHTML = `<p class="red-piece" id="${pieceId}"></p>`;
+        redsPieces = document.querySelectorAll("p");
+        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
         if (seventhSpace) {
             cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
+            tempSeven.pop();
         }
         if (ninthSpace) {
             cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
+            tempNine.pop();
         }
         if (fourteenthSpace) {
             cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
+            tempFourteen.pop();
         }
         if (eighteenthSpace) {
             cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
+            tempEighteen.pop();
         }
         changeData(indexOfBoardPiece, indexOfBoardPiece + 9);
     }
 
     if (turn === false && pieceId >= 12) {
+        document.getElementById(pieceId).remove();
         cells[indexOfBoardPiece].innerHTML = "";
         cells[indexOfBoardPiece - 9].innerHTML = `<span class="black-piece" id="${pieceId}"></span>`;
+        blacksPieces = document.querySelectorAll("span");
+        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
         if (seventhSpace) {
             cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
+            tempSeven.pop();
         }
         if (ninthSpace) {
             cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
+            tempNine.pop();
         }
         if (fourteenthSpace) {
             cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
+            tempFourteen.pop();
         }
         if (eighteenthSpace) {
             cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
+            tempEighteen.pop();
         }
         changeData(indexOfBoardPiece, indexOfBoardPiece - 9);
     }
@@ -290,37 +327,51 @@ function ninthMove() {
 
 function fourteenthMove() {
     if (turn && pieceId < 12) {
+        document.getElementById(pieceId).remove();
         cells[indexOfBoardPiece].innerHTML = "";
         cells[indexOfBoardPiece + 14].innerHTML = `<p class="red-piece" id="${pieceId}"></p>`;
+        redsPieces = document.querySelectorAll("p");
+        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
         if (seventhSpace) {
             cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
+            tempSeven.pop();
         }
         if (ninthSpace) {
             cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
+            tempNine.pop();
         }
         if (fourteenthSpace) {
             cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
+            tempFourteen.pop();
         }
         if (eighteenthSpace) {
             cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
+            tempEighteen.pop();
         }
         changeData(indexOfBoardPiece, indexOfBoardPiece + 14, indexOfBoardPiece + 7);
     }
 
     if (turn === false && pieceId >= 12) {
+        document.getElementById(pieceId).remove();
         cells[indexOfBoardPiece].innerHTML = "";
         cells[indexOfBoardPiece - 14].innerHTML = `<span class="black-piece" id="${pieceId}"></span>`;
+        blacksPieces = document.querySelectorAll("span");
+        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
         if (seventhSpace) {
             cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
+            tempSeven.pop();
         }
         if (ninthSpace) {
             cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
+            tempNine.pop();
         }
         if (fourteenthSpace) {
             cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
+            tempFourteen.pop();
         }
         if (eighteenthSpace) {
             cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
+            tempEighteen.pop();
         }
         changeData(indexOfBoardPiece, indexOfBoardPiece - 14, indexOfBoardPiece - 7);
     }
@@ -328,37 +379,51 @@ function fourteenthMove() {
 
 function eighteenthMove() {
     if (turn && pieceId < 12) {
+        document.getElementById(pieceId).remove();
         cells[indexOfBoardPiece].innerHTML = "";
         cells[indexOfBoardPiece + 18].innerHTML = `<p class="red-piece" id="${pieceId}"></p>`;
+        redsPieces = document.querySelectorAll("p");
+        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
         if (seventhSpace) {
             cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
+            tempSeven.pop();
         }
         if (ninthSpace) {
             cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
+            tempNine.pop();
         }
         if (fourteenthSpace) {
             cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
+            tempFourteen.pop();
         }
         if (eighteenthSpace) {
             cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
+            tempEighteen.pop();
         }
         changeData(indexOfBoardPiece, indexOfBoardPiece + 18, indexOfBoardPiece + 9);
     }
 
     if (turn === false && pieceId >= 12) {
+        document.getElementById(pieceId).remove();
         cells[indexOfBoardPiece].innerHTML = "";
         cells[indexOfBoardPiece - 18].innerHTML = `<span class="black-piece" id="${pieceId}"></span>`;
+        blacksPieces = document.querySelectorAll("span");
+        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
         if (seventhSpace) {
             cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
+            tempSeven.pop();
         }
         if (ninthSpace) {
             cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
+            tempNine.pop();
         }
         if (fourteenthSpace) {
             cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
+            tempFourteen.pop();
         }
         if (eighteenthSpace) {
             cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
+            tempEighteen.pop();
         }
         changeData(indexOfBoardPiece, indexOfBoardPiece - 18, indexOfBoardPiece - 9);
     }
@@ -371,14 +436,21 @@ function changeData(indexOfBoardPiece, modifiedIndex, removePiece) {
     if (removePiece) {
         board[removePiece] = null;
         if (turn && pieceId < 12) {
-            cells[indexOfBoardPiece].innerHTML = "";
+            console.log("I REMOVED A BLACK SCORE")
+            cells[removePiece].innerHTML = "";
             blackScore--
         }
         if (turn === false && pieceId >= 12) {
-            cells[indexOfBoardPiece].innerHTML = "";
+            console.log("I REMOVED A RED SCORE")
+            cells[removePiece].innerHTML = "";
             redScore--
         }
     }
+    isKing = false;
+    seventhSpace = false;
+    ninthSpace = false;
+    fourteenthSpace = false;
+    eighteenthSpace = false;
     changePlayer();
 }
 
@@ -405,6 +477,7 @@ function checkForWin() {
         redTurnText.textContent = "";
         blackTurntext.textContent = "BLACK WINS!"
     }
+    console.log(board)
     givePiecesEventListeners();
 }
 givePiecesEventListeners();
