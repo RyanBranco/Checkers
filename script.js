@@ -40,18 +40,24 @@ let ninthSpace = false;
 let fourteenthSpace = false;
 let eighteenthSpace = false;
 
+/* used to help remove event listeners if selected piece is changed */
+let tempSeven = [];
+let tempNine = [];
+let tempFourteen = [];
+let tempEighteen = [];
+
 /*---------- Event Listeners ----------*/
 
 function givePiecesEventListeners() {
     if (turn) {
         for (let i = 0; i < redsPieces.length; i++) {
-            redsPieces[i].addEventListener("click", getAvailableSpaces)
+            redsPieces[i].addEventListener("click", getAvailableSpaces);
         }
     }
 
     if (turn == false) {
         for (let i = 0; i < blacksPieces.length; i++) {
-            blacksPieces[i].addEventListener("click", getAvailableSpaces)
+            blacksPieces[i].addEventListener("click", getAvailableSpaces);
         }
     }
 }
@@ -59,11 +65,50 @@ function givePiecesEventListeners() {
 /*---------- Logic ----------*/
 
 function getAvailableSpaces(event) {
+
+    /* removes the previous event listener if piece target is changed */
+    if (turn && pieceId < 12) {
+        if (tempSeven[0]) {
+            cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove)
+            tempSeven.pop();
+        }
+        if (tempNine[0]) {
+            cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove)
+            tempNine.pop();
+        }
+        if (tempFourteen[0]) {
+            cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove)
+            tempFourteen.pop();
+        }
+        if (tempEighteen[0]) {
+            cells[indexOfBoardPiece + 18].removeEventListener("click", seventeenthMove)
+            tempEighteen.pop();
+        }
+    }
+    if (turn === false && pieceId >= 12) {
+        if (tempSeven[0]) {
+            cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
+            tempSeven.pop();
+        }
+        if (tempNine[0]) {
+            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
+            tempNine.pop();
+        }
+        if (tempFourteen[0]) {
+            cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
+            tempFourteen.pop();
+        }
+        if (tempEighteen[0]) {
+            cells[indexOfBoardPiece - 18].removeEventListener("click", seventeenthMove)
+            tempEighteen.pop();
+        }
+    }
+
     pieceId = parseInt(event.target.id);
     indexOfBoardPiece = parse(pieceId);
     if (turn && pieceId < 12) {
         for (let i = 0; i < redsPieces.length; i++) {
-            if (board[indexOfBoardPiece + 7] === null  && cells[indexOfBoardPiece + 7].classList.contains("red") !== true) {
+            if (board[indexOfBoardPiece + 7] === null && cells[indexOfBoardPiece + 7].classList.contains("red") !== true) {
                 seventhSpace = true;
                 redsPieces[i].style.border = "1px solid white";
                 redsPieces[pieceId].style.border = "3px solid green";
@@ -89,7 +134,7 @@ function getAvailableSpaces(event) {
 
     if (turn === false && pieceId >= 12) {
         for (let i = 0; i < blacksPieces.length; i++) {
-            if (board[indexOfBoardPiece - 7] === null  && cells[indexOfBoardPiece - 7].classList.contains("red") !== true) {
+            if (board[indexOfBoardPiece - 7] === null && cells[indexOfBoardPiece - 7].classList.contains("red") !== true) {
                 seventhSpace = true;
                 blacksPieces[i].style.border = "1px solid white";
                 blacksPieces[pieceId].style.border = "3px solid green";
@@ -115,40 +160,56 @@ function getAvailableSpaces(event) {
 }
 
 function giveCellsClick() {
+    console.log("pieceId: " + pieceId);
+    console.log("index: " + indexOfBoardPiece);
+    console.log("isKing: " + isKing);
+    console.log("Seventh: " + seventhSpace);
+    console.log("ninth: " + ninthSpace);
+    console.log("fourteenth: " + fourteenthSpace);
+    console.log("eighteenth: " + eighteenthSpace);
+    console.log("turn: " + turn);
+
     if (turn && pieceId < 12) {
         if (seventhSpace) {
             cells[indexOfBoardPiece + 7].addEventListener("click", seventhMove);
+            tempSeven.push(indexOfBoardPiece + 7);
         }
         if (ninthSpace) {
             cells[indexOfBoardPiece + 9].addEventListener("click", ninthMove);
+            tempNine.push(indexOfBoardPiece + 9);
         }
         if (fourteenthSpace) {
             cells[indexOfBoardPiece + 14].addEventListener("click", fourteenthMove);
+            tempFourteen.push(indexOfBoardPiece + 14);
         }
         if (eighteenthSpace) {
             cells[indexOfBoardPiece + 18].addEventListener("click", eighteenthMove);
+            tempEighteen.push(indexOfBoardPiece + 18);
         }
     }
 
     if (turn === false && pieceId >= 12) {
         if (seventhSpace) {
             cells[indexOfBoardPiece - 7].addEventListener("click", seventhMove);
-            total += 1;
+            tempSeven.push(indexOfBoardPiece - 7);
         }
         if (ninthSpace) {
             cells[indexOfBoardPiece - 9].addEventListener("click", ninthMove);
-            total += 2;
+            tempNine.push(indexOfBoardPiece - 9);
         }
         if (fourteenthSpace) {
             cells[indexOfBoardPiece - 14].addEventListener("click", fourteenthMove);
-            total += 3;
+            tempFourteen.push(indexOfBoardPiece - 14);
         }
         if (eighteenthSpace) {
             cells[indexOfBoardPiece - 18].addEventListener("click", eighteenthMove);
-            total += 4;
+            tempEighteen.push(indexOfBoardPiece - 18);
         }
     }
-
+    console.log("tempSeven: " + tempSeven);
+    console.log("tempNine: " + tempNine);
+    console.log("tempFourteen: " + tempFourteen);
+    console.log("tempEighteen: " + tempEighteen);
 }
 
 function seventhMove() {
@@ -177,7 +238,7 @@ function seventhMove() {
             cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
         }
         if (ninthSpace) {
-            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove) 
+            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
         }
         if (fourteenthSpace) {
             cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
@@ -215,7 +276,7 @@ function ninthMove() {
             cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
         }
         if (ninthSpace) {
-            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove) 
+            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
         }
         if (fourteenthSpace) {
             cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
@@ -223,7 +284,7 @@ function ninthMove() {
         if (eighteenthSpace) {
             cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
         }
-        changeData(indexOfBoardPiece, indexOfBoardPiece - 9);    
+        changeData(indexOfBoardPiece, indexOfBoardPiece - 9);
     }
 }
 
@@ -253,7 +314,7 @@ function fourteenthMove() {
             cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
         }
         if (ninthSpace) {
-            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove) 
+            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
         }
         if (fourteenthSpace) {
             cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
@@ -261,7 +322,7 @@ function fourteenthMove() {
         if (eighteenthSpace) {
             cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
         }
-        changeData(indexOfBoardPiece, indexOfBoardPiece - 14, indexOfBoardPiece - 7);   
+        changeData(indexOfBoardPiece, indexOfBoardPiece - 14, indexOfBoardPiece - 7);
     }
 }
 
@@ -291,7 +352,7 @@ function eighteenthMove() {
             cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
         }
         if (ninthSpace) {
-            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove) 
+            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
         }
         if (fourteenthSpace) {
             cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
@@ -299,20 +360,22 @@ function eighteenthMove() {
         if (eighteenthSpace) {
             cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
         }
-        changeData(indexOfBoardPiece, indexOfBoardPiece - 18, indexOfBoardPiece - 9);   
+        changeData(indexOfBoardPiece, indexOfBoardPiece - 18, indexOfBoardPiece - 9);
     }
 }
 
 // Changes the board states data on the back end
 function changeData(indexOfBoardPiece, modifiedIndex, removePiece) {
     board[indexOfBoardPiece] = null;
-    board[modifiedIndex] = parseInt(indexOfBoardPiece);
+    board[modifiedIndex] = parseInt(pieceId);
     if (removePiece) {
         board[removePiece] = null;
-        if (turn) {
+        if (turn && pieceId < 12) {
+            cells[indexOfBoardPiece].innerHTML = "";
             blackScore--
         }
-        if (turn === false) {
+        if (turn === false && pieceId >= 12) {
+            cells[indexOfBoardPiece].innerHTML = "";
             redScore--
         }
     }

@@ -21,12 +21,16 @@ div {
 }
 
 #red-turn-text {
+    margin-left: auto;
+    margin-right: auto;
     color: black;
     font-family: "open sans";
     font-size: 60px;
 }
 
 #black-turn-text {
+    margin-left: auto;
+    margin-right: auto;
     font-family: "open sans";
     font-size: 60px;
     color: lightgray;
