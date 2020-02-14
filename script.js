@@ -39,12 +39,20 @@ let seventhSpace = false;
 let ninthSpace = false;
 let fourteenthSpace = false;
 let eighteenthSpace = false;
+let kingSeventhSpace = false;
+let kingNinthSpace = false;
+let kingFourteenthSpace = false;
+let kingEighteenthSpace = false;
 
 /* used to help remove event listeners if selected piece is changed */
 let tempSeven = [];
 let tempNine = [];
 let tempFourteen = [];
 let tempEighteen = [];
+let tempKingSeven = [];
+let tempKingNine = [];
+let tempKingFourteen = [];
+let tempKingEighteen = [];
 
 /*---------- Event Listeners ----------*/
 
@@ -62,12 +70,8 @@ function givePiecesEventListeners() {
 
 function getAvailableSpaces(event) {
 
-    // if (y) {
-    //     isKing = true;
-    // }
-
     /* removes the previous event listener if piece target is changed */
-    if ((turn && pieceId < 12) || (isKing)) {
+    if (turn && pieceId < 12) {
         if (tempSeven[0]) {
             cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove)
             tempSeven.pop();
@@ -88,8 +92,30 @@ function getAvailableSpaces(event) {
             tempEighteen.pop();
             eighteenthSpace = false;
         }
+        if (isKing) {
+            if (tempKingSeven[0]) {
+                cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
+                tempKingSeven.pop();
+                kingSeventhSpace = false;
+            }
+            if (tempKingNine[0]) {
+                cells[indexOfBoardPiece - 9].removeEventListener("click", seventhMove)
+                tempKingNine.pop();
+                kingNinthSpace = false;
+            }
+            if (tempKingFourteen[0]) {
+                cells[indexOfBoardPiece - 14].removeEventListener("click", seventhMove)
+                tempKingFourteen.pop();
+                kingFourteenthSpace = false;
+            }
+            if (tempKingEighteen[0]) {
+                cells[indexOfBoardPiece - 18].removeEventListener("click", seventhMove)
+                tempKingEighteen.pop();
+                kingFourteenthSpace = false;
+            }
+        }
     }
-    if (turn === false && pieceId >= 12 || (isKing)) {
+    if (turn === false && pieceId >= 12) {
         if (tempSeven[0]) {
             cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
             tempSeven.pop();
@@ -110,10 +136,39 @@ function getAvailableSpaces(event) {
             tempEighteen.pop();
             eighteenthSpace = false;
         }
+        if (isKing) {
+            if (tempKingSeven[0]) {
+                cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove)
+                tempKingSeven.pop();
+                seventhSpace = false;
+            }
+            if (tempKingNine[0]) {
+                cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove)
+                tempKingNine.pop();
+                ninthSpace = false;
+            }
+            if (tempKingFourteen[0]) {
+                cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove)
+                tempKingFourteen.pop();
+                fourteenthSpace = false;
+            }
+            if (tempKingEighteen[0]) {
+                cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove)
+                tempKingEighteen.pop();
+                eighteenthSpace = false;
+            }
+        }
     }
 
     pieceId = parseInt(event.target.id);
     indexOfBoardPiece = parse(pieceId);
+
+    if (document.getElementById(pieceId).classList.contains("king")) {
+        isKing = true;
+    } else {
+        isKing = false;
+    }
+
     if (turn && pieceId < 12) {
         for (let i = 0; i < redsPieces.length; i++) {
             if (board[indexOfBoardPiece + 7] === null && cells[indexOfBoardPiece + 7].classList.contains("red") !== true) {
@@ -135,6 +190,28 @@ function getAvailableSpaces(event) {
                 eighteenthSpace = true;
                 redsPieces[i].style.border = "1px solid white";
                 document.getElementById(pieceId).style.border = "3px solid green";
+            }
+            if (isKing) {
+                if (board[indexOfBoardPiece - 7] === null && cells[indexOfBoardPiece - 7].classList.contains("red") !== true) {
+                    kingSeventhSpace = true;
+                    redsPieces[i].style.border = "1px solid white";
+                    document.getElementById(pieceId).style.border = "3px solid green";
+                }
+                if (board[indexOfBoardPiece - 9] === null && cells[indexOfBoardPiece - 9].classList.contains("red") !== true) {
+                    kingNinthSpace = true;
+                    redsPieces[i].style.border = "1px solid white";
+                    document.getElementById(pieceId).style.border = "3px solid green";
+                }
+                if (board[indexOfBoardPiece - 14] === null && cells[indexOfBoardPiece - 14].classList.contains("red") !== true && board[indexOfBoardPiece - 7] >= 12) {
+                    kingFourteenthSpace = true;
+                    blacksPieces[i].style.border = "1px solid white";
+                    document.getElementById(pieceId).style.border = "3px solid green";
+                }
+                if (board[indexOfBoardPiece - 18] === null && cells[indexOfBoardPiece - 18].classList.contains("red") !== true && board[indexOfBoardPiece - 9] >= 12) {
+                    kingEighteenthSpace = true;
+                    redsPieces[i].style.border = "1px solid white";
+                    document.getElementById(pieceId).style.border = "3px solid green";
+                }
             }
         }
         giveCellsClick();
@@ -162,21 +239,34 @@ function getAvailableSpaces(event) {
                 blacksPieces[i].style.border = "1px solid white";
                 document.getElementById(pieceId).style.border = "3px solid green";
             }
+            if (isKing) {
+                if (board[indexOfBoardPiece + 7] === null && cells[indexOfBoardPiece + 7].classList.contains("red") !== true) {
+                    kingSeventhSpace = true;
+                    blacksPieces[i].style.border = "1px solid white";
+                    document.getElementById(pieceId).style.border = "3px solid green";
+                }
+                if (board[indexOfBoardPiece + 9] === null && cells[indexOfBoardPiece + 9].classList.contains("red") !== true) {
+                    kingNinthSpace = true;
+                    blacksPieces[i].style.border = "1px solid white";
+                    document.getElementById(pieceId).style.border = "3px solid green";
+                }
+                if (board[indexOfBoardPiece + 14] === null && cells[indexOfBoardPiece + 14].classList.contains("red") !== true && board[indexOfBoardPiece + 7] < 12 && board[indexOfBoardPiece + 7] !== null) {
+                    kingFourteenthSpace = true;
+                    blacksPieces[i].style.border = "1px solid white";
+                    document.getElementById(pieceId).style.border = "3px solid green";
+                }
+                if (board[indexOfBoardPiece + 18] === null && cells[indexOfBoardPiece + 18].classList.contains("red") !== true && board[indexOfBoardPiece + 9] < 12 && board[indexOfBoardPiece + 9] !== null) {
+                    kingEighteenthSpace = true;
+                    blacksPieces[i].style.border = "1px solid white";
+                    document.getElementById(pieceId).style.border = "3px solid green";
+                }
+            }
         }
         giveCellsClick();
     }
 }
 
 function giveCellsClick() {
-    console.log("pieceId: " + pieceId);
-    console.log("index: " + indexOfBoardPiece);
-    console.log("isKing: " + isKing);
-    console.log("Seventh: " + seventhSpace);
-    console.log("ninth: " + ninthSpace);
-    console.log("fourteenth: " + fourteenthSpace);
-    console.log("eighteenth: " + eighteenthSpace);
-    console.log("turn: " + turn);
-
     if (turn && pieceId < 12) {
         if (seventhSpace) {
             cells[indexOfBoardPiece + 7].addEventListener("click", seventhMove);
@@ -193,6 +283,24 @@ function giveCellsClick() {
         if (eighteenthSpace) {
             cells[indexOfBoardPiece + 18].addEventListener("click", eighteenthMove);
             tempEighteen.push(indexOfBoardPiece + 18);
+        }
+        if (isKing) {
+            if (kingSeventhSpace) {
+                cells[indexOfBoardPiece - 7].addEventListener("click", seventhMove);
+                tempKingSeven.push(indexOfBoardPiece - 7);
+            }
+            if (kingNinthSpace) {
+                cells[indexOfBoardPiece - 9].addEventListener("click", ninthMove);
+                tempKingNine.push(indexOfBoardPiece - 9);
+            }
+            if (kingFourteenthSpace) {
+                cells[indexOfBoardPiece - 14].addEventListener("click", fourteenthMove);
+                tempKingFourteen.push(indexOfBoardPiece - 14);
+            }
+            if (kingEighteenthSpace) {
+                cells[indexOfBoardPiece - 18].addEventListener("click", eighteenthMove);
+                tempKingEighteen.push(indexOfBoardPiece - 18);
+            }
         }
     }
 
@@ -213,11 +321,45 @@ function giveCellsClick() {
             cells[indexOfBoardPiece - 18].addEventListener("click", eighteenthMove);
             tempEighteen.push(indexOfBoardPiece - 18);
         }
+        if (isKing) {
+            if (kingSeventhSpace) {
+                cells[indexOfBoardPiece + 7].addEventListener("click", seventhMove);
+                tempKingSeven.push(indexOfBoardPiece + 7);
+            }
+            if (kingNinthSpace) {
+                cells[indexOfBoardPiece + 9].addEventListener("click", ninthMove);
+                tempKingNine.push(indexOfBoardPiece + 9);
+            }
+            if (kingFourteenthSpace) {
+                cells[indexOfBoardPiece + 14].addEventListener("click", fourteenthMove);
+                tempKingFourteen.push(indexOfBoardPiece + 14);
+            }
+            if (kingEighteenthSpace) {
+                cells[indexOfBoardPiece + 18].addEventListener("click", eighteenthMove);
+                tempKingEighteen.push(indexOfBoardPiece + 18);
+            }
+        }
     }
+    console.log("pieceId: " + pieceId);
+    console.log("index: " + indexOfBoardPiece);
+    console.log("isKing: " + isKing);
+    console.log("Seventh: " + seventhSpace);
+    console.log("ninth: " + ninthSpace);
+    console.log("fourteenth: " + fourteenthSpace);
+    console.log("eighteenth: " + eighteenthSpace);
+    console.log("turn: " + turn);
+    console.log("kingsSeventh: " + kingSeventhSpace);
+    console.log("kingsNinth: " + kingNinthSpace);
+    console.log("kingsFourteenth: " + kingFourteenthSpace);
+    console.log("kingsEighteenth: " + kingEighteenthSpace);
     console.log("tempSeven: " + tempSeven);
     console.log("tempNine: " + tempNine);
     console.log("tempFourteen: " + tempFourteen);
     console.log("tempEighteen: " + tempEighteen);
+    console.log("tempKingSeven: " + tempKingSeven);
+    console.log("tempKingNine: " + tempKingNine);
+    console.log("tempKingFourteen: " + tempKingFourteen);
+    console.log("tempKingEighteen: " + tempKingEighteen);
     console.log("")
 }
 
@@ -439,7 +581,6 @@ function changeData(indexOfBoardPiece, modifiedIndex, removePiece) {
     if (turn === false && pieceId >= 12 && modifiedIndex <= 7) {
         document.getElementById(pieceId).classList.add("king");
     }
-
     if (removePiece) {
         board[removePiece] = null;
         if (turn && pieceId < 12) {
@@ -451,12 +592,15 @@ function changeData(indexOfBoardPiece, modifiedIndex, removePiece) {
             redScore--
         }
     }
-
     isKing = false;
     seventhSpace = false;
     ninthSpace = false;
     fourteenthSpace = false;
     eighteenthSpace = false;
+    kingSeventhSpace = false;
+    kingNinthSpace = false;
+    kingFourteenthSpace = false;
+    kingEighteenthSpace = false;
     changePlayer();
 }
 
@@ -483,7 +627,6 @@ function checkForWin() {
         redTurnText.textContent = "";
         blackTurntext.textContent = "BLACK WINS!"
     }
-    console.log(board)
     givePiecesEventListeners();
 }
 givePiecesEventListeners();
