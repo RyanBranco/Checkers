@@ -10,7 +10,6 @@ This was written using:
  2. CSS
  3. JavaScript
 
- [Click here is you would like to play the game](https://ryanbranco.github.io/Checkers/)
 
  Future improvments:
   1. Make double jumps
@@ -18,3 +17,5 @@ This was written using:
   3. Make wins more extravagant
   4. Create a reset button if you want to play again
   5. Create a player vs. CPU mode
+
+[Click here if you would like to play the game](https://ryanbranco.github.io/Checkers/)
