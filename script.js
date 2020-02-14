@@ -1150,9 +1150,11 @@ function changePlayer() {
 // Checks every turn for a win
 function checkForWin() {
     if (blackScore === 0) {
+        redTurnText.style.color = "black";
         blackTurntext.textContent = "";
         redTurnText.textContent = "RED WINS!";
     } else if (redScore === 0) {
+        blackTurntext.style.color = "black";
         redTurnText.textContent = "";
         blackTurntext.textContent = "BLACK WINS!"
     }
