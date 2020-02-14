@@ -1,9 +1,9 @@
 # Checkers
 Checkers browser game for player vs. player
 
-![checkers game](/Users/Ryan/code/projects/Checkers/Images/checkersscreenshot.png "Checkers")
+![checkers game](Images/checkersscreenshot.png "Checkers")
 
-![win](/Users/Ryan/code/projects/Checkers/Images/checkerswin.png "Checkers win")
+![win](Images/checkerswin.png "Checkers win")
 
 This was written using:
  1. HTML
