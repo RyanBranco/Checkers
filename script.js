@@ -75,6 +75,7 @@ function getAvailableSpaces(event) {
         if (tempSeven[0]) {
             cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove)
             tempSeven.pop();
+            //remove tempKingSeven etc. for all of these here
             seventhSpace = false;
         }
         if (tempNine[0]) {
@@ -99,17 +100,17 @@ function getAvailableSpaces(event) {
                 kingSeventhSpace = false;
             }
             if (tempKingNine[0]) {
-                cells[indexOfBoardPiece - 9].removeEventListener("click", seventhMove)
+                cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
                 tempKingNine.pop();
                 kingNinthSpace = false;
             }
             if (tempKingFourteen[0]) {
-                cells[indexOfBoardPiece - 14].removeEventListener("click", seventhMove)
+                cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
                 tempKingFourteen.pop();
                 kingFourteenthSpace = false;
             }
             if (tempKingEighteen[0]) {
-                cells[indexOfBoardPiece - 18].removeEventListener("click", seventhMove)
+                cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
                 tempKingEighteen.pop();
                 kingFourteenthSpace = false;
             }
@@ -364,7 +365,7 @@ function giveCellsClick() {
 }
 
 function seventhMove() {
-    if (turn && pieceId < 12) {
+    if (turn && pieceId < 12 && isKing === false) {
         document.getElementById(pieceId).remove();
         cells[indexOfBoardPiece].innerHTML = "";
         cells[indexOfBoardPiece + 7].innerHTML = `<p class="red-piece" id="${pieceId}"></p>`;
@@ -388,8 +389,32 @@ function seventhMove() {
         }
         changeData(indexOfBoardPiece, indexOfBoardPiece + 7);
     }
+    if (turn && pieceId < 12 && isKing) {
+        document.getElementById(pieceId).remove();
+        cells[indexOfBoardPiece].innerHTML = "";
+        cells[indexOfBoardPiece + 7].innerHTML = `<p class="red-piece king" id="${pieceId}"></p>`;
+        redsPieces = document.querySelectorAll("p");
+        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
+        if (seventhSpace) {
+            cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
+            tempSeven.pop();
+        }
+        if (ninthSpace) {
+            cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
+            tempNine.pop();
+        }
+        if (fourteenthSpace) {
+            cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
+            tempFourteen.pop();
+        }
+        if (eighteenthSpace) {
+            cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
+            tempEighteen.pop();
+        }
+        changeData(indexOfBoardPiece, indexOfBoardPiece + 7);
+    }
 
-    if (turn === false && pieceId >= 12) {
+    if (turn === false && pieceId >= 12 && isKing === false) {
         document.getElementById(pieceId).remove();
         cells[indexOfBoardPiece].innerHTML = "";
         cells[indexOfBoardPiece - 7].innerHTML = `<span class="black-piece" id="${pieceId}"></span>`;
@@ -413,10 +438,34 @@ function seventhMove() {
         }
         changeData(indexOfBoardPiece, indexOfBoardPiece - 7);
     }
+    if (turn === false && pieceId >= 12 && isKing) {
+        document.getElementById(pieceId).remove();
+        cells[indexOfBoardPiece].innerHTML = "";
+        cells[indexOfBoardPiece - 7].innerHTML = `<span class="black-piece king" id="${pieceId}"></span>`;
+        blacksPieces = document.querySelectorAll("span");
+        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
+        if (seventhSpace) {
+            cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
+            tempSeven.pop();
+        }
+        if (ninthSpace) {
+            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
+            tempNine.pop();
+        }
+        if (fourteenthSpace) {
+            cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
+            tempFourteen.pop();
+        }
+        if (eighteenthSpace) {
+            cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
+            tempEighteen.pop();
+        }
+        changeData(indexOfBoardPiece, indexOfBoardPiece - 7);
+    }
 }
 
 function ninthMove() {
-    if (turn && pieceId < 12) {
+    if (turn && pieceId < 12 && isKing === false) {
         document.getElementById(pieceId).remove();
         cells[indexOfBoardPiece].innerHTML = "";
         cells[indexOfBoardPiece + 9].innerHTML = `<p class="red-piece" id="${pieceId}"></p>`;
@@ -440,11 +489,59 @@ function ninthMove() {
         }
         changeData(indexOfBoardPiece, indexOfBoardPiece + 9);
     }
+    if (turn && pieceId < 12 && isKing) {
+        document.getElementById(pieceId).remove();
+        cells[indexOfBoardPiece].innerHTML = "";
+        cells[indexOfBoardPiece + 9].innerHTML = `<p class="red-piece king" id="${pieceId}"></p>`;
+        redsPieces = document.querySelectorAll("p");
+        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
+        if (seventhSpace) {
+            cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
+            tempSeven.pop();
+        }
+        if (ninthSpace) {
+            cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
+            tempNine.pop();
+        }
+        if (fourteenthSpace) {
+            cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
+            tempFourteen.pop();
+        }
+        if (eighteenthSpace) {
+            cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
+            tempEighteen.pop();
+        }
+        changeData(indexOfBoardPiece, indexOfBoardPiece + 9);
+    }
 
-    if (turn === false && pieceId >= 12) {
+    if (turn === false && pieceId >= 12 && isKing === false) {
         document.getElementById(pieceId).remove();
         cells[indexOfBoardPiece].innerHTML = "";
         cells[indexOfBoardPiece - 9].innerHTML = `<span class="black-piece" id="${pieceId}"></span>`;
+        blacksPieces = document.querySelectorAll("span");
+        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
+        if (seventhSpace) {
+            cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
+            tempSeven.pop();
+        }
+        if (ninthSpace) {
+            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
+            tempNine.pop();
+        }
+        if (fourteenthSpace) {
+            cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
+            tempFourteen.pop();
+        }
+        if (eighteenthSpace) {
+            cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
+            tempEighteen.pop();
+        }
+        changeData(indexOfBoardPiece, indexOfBoardPiece - 9);
+    }
+    if (turn === false && pieceId >= 12 && isKing) {
+        document.getElementById(pieceId).remove();
+        cells[indexOfBoardPiece].innerHTML = "";
+        cells[indexOfBoardPiece - 9].innerHTML = `<span class="black-piece king" id="${pieceId}"></span>`;
         blacksPieces = document.querySelectorAll("span");
         document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
         if (seventhSpace) {
@@ -492,8 +589,32 @@ function fourteenthMove() {
         }
         changeData(indexOfBoardPiece, indexOfBoardPiece + 14, indexOfBoardPiece + 7);
     }
+    if (turn && pieceId < 12 && isKing === false) {
+        document.getElementById(pieceId).remove();
+        cells[indexOfBoardPiece].innerHTML = "";
+        cells[indexOfBoardPiece + 14].innerHTML = `<p class="red-piece king" id="${pieceId}"></p>`;
+        redsPieces = document.querySelectorAll("p");
+        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
+        if (seventhSpace) {
+            cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
+            tempSeven.pop();
+        }
+        if (ninthSpace) {
+            cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
+            tempNine.pop();
+        }
+        if (fourteenthSpace) {
+            cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
+            tempFourteen.pop();
+        }
+        if (eighteenthSpace) {
+            cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
+            tempEighteen.pop();
+        }
+        changeData(indexOfBoardPiece, indexOfBoardPiece + 14, indexOfBoardPiece + 7);
+    }
 
-    if (turn === false && pieceId >= 12) {
+    if (turn === false && pieceId >= 12 && isKing === false) {
         document.getElementById(pieceId).remove();
         cells[indexOfBoardPiece].innerHTML = "";
         cells[indexOfBoardPiece - 14].innerHTML = `<span class="black-piece" id="${pieceId}"></span>`;
@@ -517,10 +638,34 @@ function fourteenthMove() {
         }
         changeData(indexOfBoardPiece, indexOfBoardPiece - 14, indexOfBoardPiece - 7);
     }
+    if (turn === false && pieceId >= 12 && isKing) {
+        document.getElementById(pieceId).remove();
+        cells[indexOfBoardPiece].innerHTML = "";
+        cells[indexOfBoardPiece - 14].innerHTML = `<span class="black-piece king" id="${pieceId}"></span>`;
+        blacksPieces = document.querySelectorAll("span");
+        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
+        if (seventhSpace) {
+            cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
+            tempSeven.pop();
+        }
+        if (ninthSpace) {
+            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
+            tempNine.pop();
+        }
+        if (fourteenthSpace) {
+            cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
+            tempFourteen.pop();
+        }
+        if (eighteenthSpace) {
+            cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
+            tempEighteen.pop();
+        }
+        changeData(indexOfBoardPiece, indexOfBoardPiece - 14, indexOfBoardPiece - 7);
+    }
 }
 
 function eighteenthMove() {
-    if (turn && pieceId < 12) {
+    if (turn && pieceId < 12 && isKing === false) {
         document.getElementById(pieceId).remove();
         cells[indexOfBoardPiece].innerHTML = "";
         cells[indexOfBoardPiece + 18].innerHTML = `<p class="red-piece" id="${pieceId}"></p>`;
@@ -544,11 +689,59 @@ function eighteenthMove() {
         }
         changeData(indexOfBoardPiece, indexOfBoardPiece + 18, indexOfBoardPiece + 9);
     }
+    if (turn && pieceId < 12 && isKing) {
+        document.getElementById(pieceId).remove();
+        cells[indexOfBoardPiece].innerHTML = "";
+        cells[indexOfBoardPiece + 18].innerHTML = `<p class="red-piece king" id="${pieceId}"></p>`;
+        redsPieces = document.querySelectorAll("p");
+        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
+        if (seventhSpace) {
+            cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
+            tempSeven.pop();
+        }
+        if (ninthSpace) {
+            cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
+            tempNine.pop();
+        }
+        if (fourteenthSpace) {
+            cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
+            tempFourteen.pop();
+        }
+        if (eighteenthSpace) {
+            cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
+            tempEighteen.pop();
+        }
+        changeData(indexOfBoardPiece, indexOfBoardPiece + 18, indexOfBoardPiece + 9);
+    }
 
-    if (turn === false && pieceId >= 12) {
+    if (turn === false && pieceId >= 12 && isKing === false) {
         document.getElementById(pieceId).remove();
         cells[indexOfBoardPiece].innerHTML = "";
         cells[indexOfBoardPiece - 18].innerHTML = `<span class="black-piece" id="${pieceId}"></span>`;
+        blacksPieces = document.querySelectorAll("span");
+        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
+        if (seventhSpace) {
+            cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
+            tempSeven.pop();
+        }
+        if (ninthSpace) {
+            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
+            tempNine.pop();
+        }
+        if (fourteenthSpace) {
+            cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
+            tempFourteen.pop();
+        }
+        if (eighteenthSpace) {
+            cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
+            tempEighteen.pop();
+        }
+        changeData(indexOfBoardPiece, indexOfBoardPiece - 18, indexOfBoardPiece - 9);
+    }
+    if (turn === false && pieceId >= 12 && isKing) {
+        document.getElementById(pieceId).remove();
+        cells[indexOfBoardPiece].innerHTML = "";
+        cells[indexOfBoardPiece - 18].innerHTML = `<span class="black-piece king" id="${pieceId}"></span>`;
         blacksPieces = document.querySelectorAll("span");
         document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
         if (seventhSpace) {
