@@ -49,16 +49,12 @@ let tempEighteen = [];
 /*---------- Event Listeners ----------*/
 
 function givePiecesEventListeners() {
-    if (turn) {
-        for (let i = 0; i < redsPieces.length; i++) {
-            redsPieces[i].addEventListener("click", getAvailableSpaces);
-        }
+    for (let i = 0; i < redsPieces.length; i++) {
+        redsPieces[i].addEventListener("click", getAvailableSpaces);
     }
 
-    if (turn == false) {
-        for (let i = 0; i < blacksPieces.length; i++) {
-            blacksPieces[i].addEventListener("click", getAvailableSpaces);
-        }
+    for (let i = 0; i < blacksPieces.length; i++) {
+        blacksPieces[i].addEventListener("click", getAvailableSpaces);
     }
 }
 
@@ -66,8 +62,12 @@ function givePiecesEventListeners() {
 
 function getAvailableSpaces(event) {
 
+    // if (y) {
+    //     isKing = true;
+    // }
+
     /* removes the previous event listener if piece target is changed */
-    if (turn && pieceId < 12) {
+    if ((turn && pieceId < 12) || (isKing)) {
         if (tempSeven[0]) {
             cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove)
             tempSeven.pop();
@@ -89,7 +89,7 @@ function getAvailableSpaces(event) {
             eighteenthSpace = false;
         }
     }
-    if (turn === false && pieceId >= 12) {
+    if (turn === false && pieceId >= 12 || (isKing)) {
         if (tempSeven[0]) {
             cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
             tempSeven.pop();
@@ -433,19 +433,25 @@ function eighteenthMove() {
 function changeData(indexOfBoardPiece, modifiedIndex, removePiece) {
     board[indexOfBoardPiece] = null;
     board[modifiedIndex] = parseInt(pieceId);
+    if (turn && pieceId < 12 && modifiedIndex >= 57) {
+        document.getElementById(pieceId).classList.add("king")
+    }
+    if (turn === false && pieceId >= 12 && modifiedIndex <= 7) {
+        document.getElementById(pieceId).classList.add("king");
+    }
+
     if (removePiece) {
         board[removePiece] = null;
         if (turn && pieceId < 12) {
-            console.log("I REMOVED A BLACK SCORE")
             cells[removePiece].innerHTML = "";
             blackScore--
         }
         if (turn === false && pieceId >= 12) {
-            console.log("I REMOVED A RED SCORE")
             cells[removePiece].innerHTML = "";
             redScore--
         }
     }
+
     isKing = false;
     seventhSpace = false;
     ninthSpace = false;
