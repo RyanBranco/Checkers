@@ -1,16 +1,16 @@
 # Checkers
 Checkers browser game for player vs. player
 
-![checkers game](desktop/checkersscreenshot.png "Checkers")
+![checkers game](/Users/Ryan/code/projects/Checkers/Images/checkersscreenshot.png "Checkers")
 
-![win](desktop/checkerswin.png "Checkers win")
+![win](/Users/Ryan/code/projects/Checkers/Images/checkerswin.png "Checkers win")
 
 This was written using:
  1. HTML
  2. CSS
  3. JavaScript
 
- [Click here is you would like to play the game](https://www.google.com)
+ [Click here is you would like to play the game](https://ryanbranco.github.io/Checkers/)
 
  Future improvments:
   1. Make double jumps
