@@ -93,27 +93,25 @@ function getAvailableSpaces(event) {
             tempEighteen.pop();
             eighteenthSpace = false;
         }
-        if (isKing) {
-            if (tempKingSeven[0]) {
-                cells[indexOfBoardPiece - 7].removeEventListener("click", kingSeventhMove)
-                tempKingSeven.pop();
-                kingSeventhSpace = false;
-            }
-            if (tempKingNine[0]) {
-                cells[indexOfBoardPiece - 9].removeEventListener("click", kingNinthMove)
-                tempKingNine.pop();
-                kingNinthSpace = false;
-            }
-            if (tempKingFourteen[0]) {
-                cells[indexOfBoardPiece - 14].removeEventListener("click", kingFourteenthMove)
-                tempKingFourteen.pop();
-                kingFourteenthSpace = false;
-            }
-            if (tempKingEighteen[0]) {
-                cells[indexOfBoardPiece - 18].removeEventListener("click", kingEighteenthMove)
-                tempKingEighteen.pop();
-                kingFourteenthSpace = false;
-            }
+        if (tempKingSeven[0]) {
+            cells[indexOfBoardPiece - 7].removeEventListener("click", kingSeventhMove)
+            tempKingSeven.pop();
+            kingSeventhSpace = false;
+        }
+        if (tempKingNine[0]) {
+            cells[indexOfBoardPiece - 9].removeEventListener("click", kingNinthMove)
+            tempKingNine.pop();
+            kingNinthSpace = false;
+        }
+        if (tempKingFourteen[0]) {
+            cells[indexOfBoardPiece - 14].removeEventListener("click", kingFourteenthMove)
+            tempKingFourteen.pop();
+            kingFourteenthSpace = false;
+        }
+        if (tempKingEighteen[0]) {
+            cells[indexOfBoardPiece - 18].removeEventListener("click", kingEighteenthMove)
+            tempKingEighteen.pop();
+            kingFourteenthSpace = false;
         }
     }
     if (turn === false && pieceId >= 12) {
@@ -137,27 +135,25 @@ function getAvailableSpaces(event) {
             tempEighteen.pop();
             eighteenthSpace = false;
         }
-        if (isKing) {
-            if (tempKingSeven[0]) {
-                cells[indexOfBoardPiece + 7].removeEventListener("click", kingSeventhMove)
-                tempKingSeven.pop();
-                seventhSpace = false;
-            }
-            if (tempKingNine[0]) {
-                cells[indexOfBoardPiece + 9].removeEventListener("click", kingNinthMove)
-                tempKingNine.pop();
-                ninthSpace = false;
-            }
-            if (tempKingFourteen[0]) {
-                cells[indexOfBoardPiece + 14].removeEventListener("click", kingFourteenthMove)
-                tempKingFourteen.pop();
-                fourteenthSpace = false;
-            }
-            if (tempKingEighteen[0]) {
-                cells[indexOfBoardPiece + 18].removeEventListener("click", kingEighteenthMove)
-                tempKingEighteen.pop();
-                eighteenthSpace = false;
-            }
+        if (tempKingSeven[0]) {
+            cells[indexOfBoardPiece + 7].removeEventListener("click", kingSeventhMove)
+            tempKingSeven.pop();
+            seventhSpace = false;
+        }
+        if (tempKingNine[0]) {
+            cells[indexOfBoardPiece + 9].removeEventListener("click", kingNinthMove)
+            tempKingNine.pop();
+            ninthSpace = false;
+        }
+        if (tempKingFourteen[0]) {
+            cells[indexOfBoardPiece + 14].removeEventListener("click", kingFourteenthMove)
+            tempKingFourteen.pop();
+            fourteenthSpace = false;
+        }
+        if (tempKingEighteen[0]) {
+            cells[indexOfBoardPiece + 18].removeEventListener("click", kingEighteenthMove)
+            tempKingEighteen.pop();
+            eighteenthSpace = false;
         }
     }
 
@@ -411,7 +407,7 @@ function seventhMove() {
             cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
             tempEighteen.pop();
         }
-        if (kingKeventhSpace) {
+        if (kingSeventhSpace) {
             cells[indexOfBoardPiece - 7].removeEventListener("click", kingSeventhMove);
             tempKingSeven.pop();
         }
