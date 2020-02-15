@@ -205,7 +205,7 @@ function getAvailableSpaces(event) {
                 }
                 if (board[indexOfBoardPiece - 14] === null && cells[indexOfBoardPiece - 14].classList.contains("red") !== true && board[indexOfBoardPiece - 7] >= 12) {
                     kingFourteenthSpace = true;
-                    blacksPieces[i].style.border = "1px solid white";
+                    redsPieces[i].style.border = "1px solid white";
                     document.getElementById(pieceId).style.border = "3px solid green";
                 }
                 if (board[indexOfBoardPiece - 18] === null && cells[indexOfBoardPiece - 18].classList.contains("red") !== true && board[indexOfBoardPiece - 9] >= 12) {
