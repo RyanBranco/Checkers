@@ -13,16 +13,16 @@ const board = [
 
 /*---------- Cached Variables ----------*/
 
-// parses pieceId's and returns the index of that pieces place on the board
-let parse = function (pieceId) {
+// parses pieceId's and returns the index of that piece's place on the board
+let findPiece = function (pieceId) {
     let parsed = parseInt(pieceId);
     return board.indexOf(parsed);
 };
 
 /* html referenes */
 const cells = document.querySelectorAll("td");
-let redsPieces = document.querySelectorAll("p");
-let blacksPieces = document.querySelectorAll("span")
+const redsPieces = document.querySelectorAll("p");
+const blacksPieces = document.querySelectorAll("span")
 const redTurnText = document.querySelector("#red-turn-text");
 const blackTurntext = document.querySelector("#black-turn-text");
 
