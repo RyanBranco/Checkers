@@ -27,7 +27,7 @@ const redTurnText = document.querySelector("#red-turn-text");
 const blackTurntext = document.querySelector("#black-turn-text");
 
 /* player properties */
-let turn = 1;
+let turn = true;
 let redScore = 12;
 let blackScore = 12;
 
@@ -46,16 +46,6 @@ let selectedPiece = {
     kingEighteenthSpace: false
 }
 
-/* used to help remove event listeners if selected piece is changed */
-let tempSeven = [];
-let tempNine = [];
-let tempFourteen = [];
-let tempEighteen = [];
-let tempKingSeven = [];
-let tempKingNine = [];
-let tempKingFourteen = [];
-let tempKingEighteen = [];
-
 /*---------- Event Listeners ----------*/
 
 function givePiecesEventListeners() {
@@ -69,3 +59,71 @@ function givePiecesEventListeners() {
 }
 
 /*---------- Logic ----------*/
+
+
+
+
+
+
+
+// Changes the board states data on the back end
+function changeData(indexOfBoardPiece, modifiedIndex, removePiece) {
+    board[indexOfBoardPiece] = null;
+    board[modifiedIndex] = parseInt(pieceId);
+    if (turn && pieceId < 12 && modifiedIndex >= 57) {
+        document.getElementById(pieceId).classList.add("king")
+    }
+    if (turn === false && pieceId >= 12 && modifiedIndex <= 7) {
+        document.getElementById(pieceId).classList.add("king");
+    }
+    if (removePiece) {
+        board[removePiece] = null;
+        if (turn && pieceId < 12) {
+            cells[removePiece].innerHTML = "";
+            blackScore--
+        }
+        if (turn === false && pieceId >= 12) {
+            cells[removePiece].innerHTML = "";
+            redScore--
+        }
+    }
+    selectedPiece.isKing = false;
+    selectedPiece.seventhSpace = false;
+    selectedPiece.ninthSpace = false;
+    selectedPiece.fourteenthSpace = false;
+    selectedPiece.eighteenthSpace = false;
+    selectedPiece.kingSeventhSpace = false;
+    selectedPiece.kingNinthSpace = false;
+    selectedPiece.kingFourteenthSpace = false;
+    selectedPiece.kingEighteenthSpace = false;
+    changePlayer();
+}
+
+// Switches players turn
+function changePlayer() {
+    if (turn) {
+        turn = false;
+        redTurnText.style.color = "lightGrey";
+        blackTurntext.style.color = "black";
+    } else if (turn === false) {
+        turn = true;
+        blackTurntext.style.color = "lightGrey";
+        redTurnText.style.color = "black"
+    }
+    checkForWin();
+}
+
+// Checks every turn for a win
+function checkForWin() {
+    if (blackScore === 0) {
+        redTurnText.style.color = "black";
+        blackTurntext.textContent = "";
+        redTurnText.textContent = "RED WINS!";
+    } else if (redScore === 0) {
+        blackTurntext.style.color = "black";
+        redTurnText.textContent = "";
+        blackTurntext.textContent = "BLACK WINS!"
+    }
+    givePiecesEventListeners();
+}
+givePiecesEventListeners();
