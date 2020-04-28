@@ -46,19 +46,6 @@ let selectedPiece = {
     kingEighteenthSpace: false
 }
 
-/* piece properties */
-let pieceId;
-let indexOfBoardPiece;
-let isKing = false;
-let seventhSpace = false;
-let ninthSpace = false;
-let fourteenthSpace = false;
-let eighteenthSpace = false;
-let kingSeventhSpace = false;
-let kingNinthSpace = false;
-let kingFourteenthSpace = false;
-let kingEighteenthSpace = false;
-
 /* used to help remove event listeners if selected piece is changed */
 let tempSeven = [];
 let tempNine = [];
