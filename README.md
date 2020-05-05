@@ -15,6 +15,8 @@ This was written using:
 
 [Click here if you would like to play the game](https://ryanbranco.github.io/Checkers/)
 
+Screenshots:
+
 ![checkers game](Images/checkersscreenshot.png "Checkers")
 
 ![win](Images/checkerswin.png "Checkers win")
