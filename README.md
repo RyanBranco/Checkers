@@ -6,7 +6,7 @@ Checkers browser game for player vs. player
   * CSS
   * JavaScript
 
- * Future improvments:
+* Future improvments:
   * Double jumps
   * Find ways to shorten code
   * Make wins more extravagant
