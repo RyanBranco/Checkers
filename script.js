@@ -93,11 +93,18 @@ function removeOldEventListeners() {
         cells[indexOfBoardPiece - 18].removeEventListener("click", possibleMoves);
         selectedPiece.minusEighteenthSpace = false;
     }
+    getSelectedPiece();
+}
+
+function getSelectedPiece() {
+    selectedPiece.pieceId = parseInt(event.target.id);
+    selectedPiece.indexOfBoardPiece = findPiece(selectedPiece.pieceId);
+    console.log(selectedPiece)
     isPieceKing();
 }
 
 function isPieceKing() {
-    if (document.getElementById(pieceId).classList.contains("king")) {
+    if (document.getElementById(selectedPiece.pieceId).classList.contains("king")) {
         isKing = true;
     } else {
         isKing = false;
@@ -106,7 +113,7 @@ function isPieceKing() {
 }
 
 function getAvailableSpaces() {
-    
+
 }
 
 // Changes the board states data on the back end
