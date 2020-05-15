@@ -50,21 +50,19 @@ let selectedPiece = {
 
 function givePiecesEventListeners() {
     for (let i = 0; i < redsPieces.length; i++) {
-        redsPieces[i].addEventListener("click", getAvailableSpaces);
+        redsPieces[i].addEventListener("click", removeOldEventListeners);
     }
 
     for (let i = 0; i < blacksPieces.length; i++) {
-        blacksPieces[i].addEventListener("click", getAvailableSpaces);
+        blacksPieces[i].addEventListener("click", removeOldEventListeners);
     }
 }
 
 /*---------- Logic ----------*/
 
-
-
-
-
-
+function removeOldEventListeners() {
+    
+}
 
 // Changes the board states data on the back end
 function changeData(indexOfBoardPiece, modifiedIndex, removePiece) {
