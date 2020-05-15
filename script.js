@@ -63,7 +63,7 @@ function givePiecesEventListeners() {
 
 /*---------- Logic ----------*/
 
-// removes possible moves 
+// removes possible moves from old selected piece (* this is needed because the user might re-select a piece *)
 function removeOldEventListeners() {
     if (selectedPiece.seventhSpace) {
         cells[indexOfBoardPiece + 7].removeEventListener("click", possibleMoves);
@@ -97,20 +97,6 @@ function removeOldEventListeners() {
         cells[indexOfBoardPiece - 18].removeEventListener("click", possibleMoves);
         selectedPiece.minusEighteenthSpace = false;
     }
-    removeOpponentEventListeners();
-}
-
-// removes the opponents 'onClick' event listener
-function removeOpponentEventListeners() {
-    if (turn) {
-        for (let i = 0; i < redsPieces.length; i++) {
-            redsPieces[i].removeEventListener("click", removeOldEventListeners);
-        }
-    } else {
-        for (let i = 0; i < blacksPieces.length; i++) {
-            blacksPieces[i].removeEventListener("click", removeOldEventListeners);
-        }
-    }
     getSelectedPiece();
 }
 
@@ -118,7 +104,7 @@ function removeOpponentEventListeners() {
 function getSelectedPiece() {
     selectedPiece.pieceId = parseInt(event.target.id);
     selectedPiece.indexOfBoardPiece = findPiece(selectedPiece.pieceId);
-    console.log(selectedPiece)
+    console.log(selectedPiece);
     isPieceKing();
 }
 
@@ -157,6 +143,8 @@ function changeData(indexOfBoardPiece, modifiedIndex, removePiece) {
             redScore--
         }
     }
+    selectedPiece.pieceId = -1;
+    selectedPiece.pieceId = -1;
     selectedPiece.isKing = false;
     selectedPiece.seventhSpace = false;
     selectedPiece.ninthSpace = false;
@@ -178,7 +166,21 @@ function changePlayer() {
     } else if (turn === false) {
         turn = true;
         blackTurntext.style.color = "lightGrey";
-        redTurnText.style.color = "black"
+        redTurnText.style.color = "black";
+    }
+    removeOpponentEventListeners();
+}
+
+// removes the opponents 'onClick' event listener
+function removeOpponentEventListeners() {
+    if (turn) {
+        for (let i = 0; i < redsPieces.length; i++) {
+            blacksPieces[i].removeEventListener("click", removeOldEventListeners);
+        }
+    } else {
+        for (let i = 0; i < blacksPieces.length; i++) {
+            redsPieces[i].removeEventListener("click", removeOldEventListeners);
+        }
     }
     checkForWin();
 }
