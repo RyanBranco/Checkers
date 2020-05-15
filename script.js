@@ -62,37 +62,51 @@ function givePiecesEventListeners() {
 
 function removeOldEventListeners() {
     if (selectedPiece.seventhSpace) {
-        cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove)
+        cells[indexOfBoardPiece + 7].removeEventListener("click", possibleMoves);
         selectedPiece.seventhSpace = false;
     }
     if (selectedPiece.ninthSpace) {
-        cells[indexOfBoardPiece + 9].removeEventListener("click", seventhMove)
+        cells[indexOfBoardPiece + 9].removeEventListener("click", possibleMoves);
         selectedPiece.ninthSpace = false;
     }
     if (selectedPiece.fourteenthSpace) {
-        cells[indexOfBoardPiece + 14].removeEventListener("click", seventhMove)
+        cells[indexOfBoardPiece + 14].removeEventListener("click", possibleMoves);
         selectedPiece.fourteenthSpace = false;
     }
     if (selectedPiece.eighteenthSpace) {
-        cells[indexOfBoardPiece + 18].removeEventListener("click", seventhMove)
+        cells[indexOfBoardPiece + 18].removeEventListener("click", possibleMoves);
         selectedPiece.eighteenthSpace = false;
     }
     if (selectedPiece.minusSeventhSpace) {
-        cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
+        cells[indexOfBoardPiece - 7].removeEventListener("click", possibleMoves);
         selectedPiece.minusSeventhSpace = false;
     }
     if (selectedPiece.minusNinthSpace) {
-        cells[indexOfBoardPiece - 9].removeEventListener("click", seventhMove)
+        cells[indexOfBoardPiece - 9].removeEventListener("click", possibleMoves);
         selectedPiece.minusNinthSpace = false;
     }
     if (selectedPiece.minusFourteenthSpace) {
-        cells[indexOfBoardPiece - 14].removeEventListener("click", seventhMove)
+        cells[indexOfBoardPiece - 14].removeEventListener("click", possibleMoves);
         selectedPiece.minusFourteenthSpace = false;
     }
     if (selectedPiece.minusEighteenthSpace) {
-        cells[indexOfBoardPiece - 18].removeEventListener("click", seventhMove)
+        cells[indexOfBoardPiece - 18].removeEventListener("click", possibleMoves);
         selectedPiece.minusEighteenthSpace = false;
     }
+    isPieceKing();
+}
+
+function isPieceKing() {
+    if (document.getElementById(pieceId).classList.contains("king")) {
+        isKing = true;
+    } else {
+        isKing = false;
+    }
+    getAvailableSpaces();
+}
+
+function getAvailableSpaces() {
+    
 }
 
 // Changes the board states data on the back end
