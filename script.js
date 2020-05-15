@@ -40,10 +40,10 @@ let selectedPiece = {
     ninthSpace: false,
     fourteenthSpace: false,
     eighteenthSpace: false,
-    kingSeventhSpace: false,
-    kingNinthSpace: false,
-    kingFourteenthSpace: false,
-    kingEighteenthSpace: false
+    minusSeventhSpace: false,
+    minusNinthSpace: false,
+    minusFourteenthSpace: false,
+    minusEighteenthSpace: false
 }
 
 /*---------- Event Listeners ----------*/
@@ -61,7 +61,38 @@ function givePiecesEventListeners() {
 /*---------- Logic ----------*/
 
 function removeOldEventListeners() {
-    
+    if (selectedPiece.seventhSpace) {
+        cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove)
+        selectedPiece.seventhSpace = false;
+    }
+    if (selectedPiece.ninthSpace) {
+        cells[indexOfBoardPiece + 9].removeEventListener("click", seventhMove)
+        selectedPiece.ninthSpace = false;
+    }
+    if (selectedPiece.fourteenthSpace) {
+        cells[indexOfBoardPiece + 14].removeEventListener("click", seventhMove)
+        selectedPiece.fourteenthSpace = false;
+    }
+    if (selectedPiece.eighteenthSpace) {
+        cells[indexOfBoardPiece + 18].removeEventListener("click", seventhMove)
+        selectedPiece.eighteenthSpace = false;
+    }
+    if (selectedPiece.minusSeventhSpace) {
+        cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
+        selectedPiece.minusSeventhSpace = false;
+    }
+    if (selectedPiece.minusNinthSpace) {
+        cells[indexOfBoardPiece - 9].removeEventListener("click", seventhMove)
+        selectedPiece.minusNinthSpace = false;
+    }
+    if (selectedPiece.minusFourteenthSpace) {
+        cells[indexOfBoardPiece - 14].removeEventListener("click", seventhMove)
+        selectedPiece.minusFourteenthSpace = false;
+    }
+    if (selectedPiece.minusEighteenthSpace) {
+        cells[indexOfBoardPiece - 18].removeEventListener("click", seventhMove)
+        selectedPiece.minusEighteenthSpace = false;
+    }
 }
 
 // Changes the board states data on the back end
