@@ -48,18 +48,22 @@ let selectedPiece = {
 
 /*---------- Event Listeners ----------*/
 
+/* initialize event listeners on pieces */
 function givePiecesEventListeners() {
-    for (let i = 0; i < redsPieces.length; i++) {
-        redsPieces[i].addEventListener("click", removeOldEventListeners);
-    }
-
-    for (let i = 0; i < blacksPieces.length; i++) {
-        blacksPieces[i].addEventListener("click", removeOldEventListeners);
+    if (turn) {
+        for (let i = 0; i < redsPieces.length; i++) {
+            redsPieces[i].addEventListener("click", removeOldEventListeners);
+        }
+    } else {
+        for (let i = 0; i < blacksPieces.length; i++) {
+            blacksPieces[i].addEventListener("click", removeOldEventListeners);
+        }
     }
 }
 
 /*---------- Logic ----------*/
 
+// removes possible moves 
 function removeOldEventListeners() {
     if (selectedPiece.seventhSpace) {
         cells[indexOfBoardPiece + 7].removeEventListener("click", possibleMoves);
@@ -93,9 +97,24 @@ function removeOldEventListeners() {
         cells[indexOfBoardPiece - 18].removeEventListener("click", possibleMoves);
         selectedPiece.minusEighteenthSpace = false;
     }
+    removeOpponentEventListeners();
+}
+
+// removes the opponents 'onClick' event listener
+function removeOpponentEventListeners() {
+    if (turn) {
+        for (let i = 0; i < redsPieces.length; i++) {
+            redsPieces[i].removeEventListener("click", removeOldEventListeners);
+        }
+    } else {
+        for (let i = 0; i < blacksPieces.length; i++) {
+            blacksPieces[i].removeEventListener("click", removeOldEventListeners);
+        }
+    }
     getSelectedPiece();
 }
 
+// Gets ID and index of the board cell its on
 function getSelectedPiece() {
     selectedPiece.pieceId = parseInt(event.target.id);
     selectedPiece.indexOfBoardPiece = findPiece(selectedPiece.pieceId);
@@ -103,6 +122,7 @@ function getSelectedPiece() {
     isPieceKing();
 }
 
+// Checks if selected piece is a king
 function isPieceKing() {
     if (document.getElementById(selectedPiece.pieceId).classList.contains("king")) {
         isKing = true;
@@ -176,4 +196,5 @@ function checkForWin() {
     }
     givePiecesEventListeners();
 }
+
 givePiecesEventListeners();
