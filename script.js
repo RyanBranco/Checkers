@@ -71,18 +71,18 @@ function getPlayerPieces() {
     } else {
         playerPieces = blacksPieces;
     }
-    console.log(selectedPiece.seventhSpace)
-    removeOldEventListeners()
+    removeCellEventListeners()
 }
 
 // removes possible moves from old selected piece (* this is needed because the user might re-select a piece *)
-function removeOldEventListeners() {
+function removeCellEventListeners() {
     for (let i = 0; i < cells.length; i++) {
-        // cells[i].removeEventListener("click", possibleMoves);
+        cells[i].removeEventListener("click", possibleMoves);
     }
     resetBorders();
 }
 
+// resets borders to default
 function resetBorders() {
     for (let i = 0; i < playerPieces.length; i++) {
         playerPieces[i].style.border = "1px solid white";
@@ -137,23 +137,52 @@ function getAvailableSpaces() {
     && board[indexOfBoardPiece - 9] < 12) {
         selectedPiece.minusEighteenthSpace = true;
     }
-    givePieceBorder();
-    console.log(selectedPiece)
+    checkPieceConditions();
 }
 
+// restricts movement if the piece is a king
+function checkPieceConditions() {
+    if (selectedPiece.isKing) {
+        givePieceBorder();
+    } else {
+        if (turn) {
+            selectedPiece.minusSeventhSpace = false;
+            selectedPiece.minusNinthSpace = false;
+            selectedPiece.minusFourteenthSpace = false;
+            selectedPiece.minusEighteenthSpace = false;
+        } else {
+            selectedPiece.seventhSpace = false;
+            selectedPiece.ninthSpace = false;
+            selectedPiece.fourteenthSpace = false;
+            selectedPiece.eighteenthSpace = false;
+        }
+    }
+}
+
+// gives the piece a green highlight for the user (showing its movable)
 function givePieceBorder() {
-    
+    if (selectedPiece.seventhSpace || selectedPiece.ninthSpace || selectedPiece.fourteenthSpace || selectedPiece.eighteenthSpace
+    || selectedPiece.minusSeventhSpace || selectedPiece.minusNinthSpace || selectedPiece.minusFourteenthSpace || selectedPiece.minusEighteenthSpace) {
+        document.getElementById(selectedPiece.pieceId).style.border = "3px solid green";
+        giveCellsClick();
+    } else {
+        return;
+    }
+}
+
+function giveCellsClick() {
+
 }
 
 // Changes the board states data on the back end
 function changeData(indexOfBoardPiece, modifiedIndex, removePiece) {
     board[indexOfBoardPiece] = null;
-    board[modifiedIndex] = parseInt(pieceId);
-    if (turn && pieceId < 12 && modifiedIndex >= 57) {
-        document.getElementById(pieceId).classList.add("king")
+    board[modifiedIndex] = parseInt(selectedPiece.pieceId);
+    if (turn && selectedPiece.pieceId < 12 && modifiedIndex >= 57) {
+        document.getElementById(selectedPiece.pieceId).classList.add("king")
     }
     if (turn === false && pieceId >= 12 && modifiedIndex <= 7) {
-        document.getElementById(pieceId).classList.add("king");
+        document.getElementById(selectedPiece.pieceId).classList.add("king");
     }
     if (removePiece) {
         board[removePiece] = null;
@@ -194,15 +223,15 @@ function changePlayer() {
     removeOpponentEventListeners();
 }
 
-// removes the opponents 'onClick' event listener
+// removes the opponents 'onClick' event listener for pieces
 function removeOpponentEventListeners() {
     if (turn) {
         for (let i = 0; i < redsPieces.length; i++) {
-            blacksPieces[i].removeEventListener("click", removeOldEventListeners);
+            blacksPieces[i].removeEventListener("click", getPlayerPieces);
         }
     } else {
         for (let i = 0; i < blacksPieces.length; i++) {
-            redsPieces[i].removeEventListener("click", removeOldEventListeners);
+            redsPieces[i].removeEventListener("click", getPlayerPieces);
         }
     }
     checkForWin();
