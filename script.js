@@ -19,19 +19,20 @@ let findPiece = function (pieceId) {
     return board.indexOf(parsed);
 };
 
-/* html referenes */
+// html referenes
 const cells = document.querySelectorAll("td");
 const redsPieces = document.querySelectorAll("p");
 const blacksPieces = document.querySelectorAll("span")
 const redTurnText = document.querySelector("#red-turn-text");
 const blackTurntext = document.querySelector("#black-turn-text");
 
-/* player properties */
+// player properties
 let turn = true;
 let redScore = 12;
 let blackScore = 12;
+let playerPieces;
 
-/* selected piece properties */
+// selected piece properties
 let selectedPiece = {
     pieceId: -1,
     indexOfBoardPiece: -1,
@@ -48,54 +49,43 @@ let selectedPiece = {
 
 /*---------- Event Listeners ----------*/
 
-/* initialize event listeners on pieces */
+//initialize event listeners on pieces
 function givePiecesEventListeners() {
     if (turn) {
         for (let i = 0; i < redsPieces.length; i++) {
-            redsPieces[i].addEventListener("click", removeOldEventListeners);
+            redsPieces[i].addEventListener("click", getPlayerPieces);
         }
     } else {
         for (let i = 0; i < blacksPieces.length; i++) {
-            blacksPieces[i].addEventListener("click", removeOldEventListeners);
+            blacksPieces[i].addEventListener("click", getPlayerPieces);
         }
     }
 }
 
 /*---------- Logic ----------*/
 
+// holds the length of the players piece count
+function getPlayerPieces() {
+    if (turn) {
+        playerPieces = redsPieces;
+    } else {
+        playerPieces = blacksPieces;
+    }
+    console.log(selectedPiece.seventhSpace)
+    removeOldEventListeners()
+}
+
 // removes possible moves from old selected piece (* this is needed because the user might re-select a piece *)
 function removeOldEventListeners() {
-    if (selectedPiece.seventhSpace) {
-        cells[indexOfBoardPiece + 7].removeEventListener("click", possibleMoves);
-        selectedPiece.seventhSpace = false;
+    for (let i = 0; i < cells.length; i++) {
+        // cells[i].removeEventListener("click", possibleMoves);
     }
-    if (selectedPiece.ninthSpace) {
-        cells[indexOfBoardPiece + 9].removeEventListener("click", possibleMoves);
-        selectedPiece.ninthSpace = false;
-    }
-    if (selectedPiece.fourteenthSpace) {
-        cells[indexOfBoardPiece + 14].removeEventListener("click", possibleMoves);
-        selectedPiece.fourteenthSpace = false;
-    }
-    if (selectedPiece.eighteenthSpace) {
-        cells[indexOfBoardPiece + 18].removeEventListener("click", possibleMoves);
-        selectedPiece.eighteenthSpace = false;
-    }
-    if (selectedPiece.minusSeventhSpace) {
-        cells[indexOfBoardPiece - 7].removeEventListener("click", possibleMoves);
-        selectedPiece.minusSeventhSpace = false;
-    }
-    if (selectedPiece.minusNinthSpace) {
-        cells[indexOfBoardPiece - 9].removeEventListener("click", possibleMoves);
-        selectedPiece.minusNinthSpace = false;
-    }
-    if (selectedPiece.minusFourteenthSpace) {
-        cells[indexOfBoardPiece - 14].removeEventListener("click", possibleMoves);
-        selectedPiece.minusFourteenthSpace = false;
-    }
-    if (selectedPiece.minusEighteenthSpace) {
-        cells[indexOfBoardPiece - 18].removeEventListener("click", possibleMoves);
-        selectedPiece.minusEighteenthSpace = false;
+    resetBorders();
+}
+
+function resetBorders() {
+    for (let i = 0; i < playerPieces.length; i++) {
+        playerPieces[i].style.border = "1px solid white";
     }
     getSelectedPiece();
 }
@@ -104,7 +94,6 @@ function removeOldEventListeners() {
 function getSelectedPiece() {
     selectedPiece.pieceId = parseInt(event.target.id);
     selectedPiece.indexOfBoardPiece = findPiece(selectedPiece.pieceId);
-    console.log(selectedPiece);
     isPieceKing();
 }
 
@@ -118,8 +107,42 @@ function isPieceKing() {
     getAvailableSpaces();
 }
 
+// gets the moves that the selected piece can make
 function getAvailableSpaces() {
+    if (board[indexOfBoardPiece + 7] === null && cells[indexOfBoardPiece + 7].classList.contains("noPieceHere") !== true) {
+        selectedPiece.seventhSpace = true;
+    }
+    if (board[indexOfBoardPiece + 9] === null && cells[indexOfBoardPiece + 9].classList.contains("noPieceHere") !== true) {
+        selectedPiece.ninthSpace = true;
+    }
+    if (board[indexOfBoardPiece + 14] === null && cells[indexOfBoardPiece + 14].classList.contains("noPieceHere") !== true
+    && board[indexOfBoardPiece + 7] < 12) {
+        selectedPiece.fourteenthSpace = true;
+    }
+    if (board[indexOfBoardPiece + 18] === null && cells[indexOfBoardPiece + 18].classList.contains("noPieceHere") !== true
+    && board[indexOfBoardPiece + 9] < 12) {
+        selectedPiece.eighteenthSpace = true;
+    }
+    if (board[indexOfBoardPiece - 7] === null && cells[indexOfBoardPiece - 7].classList.contains("noPieceHere") !== true) {
+        selectedPiece.minusSeventhSpace = true;
+    }
+    if (board[indexOfBoardPiece - 9] === null && cells[indexOfBoardPiece - 9].classList.contains("noPieceHere") !== true) {
+        selectedPiece.minusNinthSpace = true;
+    }
+    if (board[indexOfBoardPiece - 14] === null && cells[indexOfBoardPiece - 14].classList.contains("noPieceHere") !== true
+    && board[indexOfBoardPiece - 7] < 12) {
+        selectedPiece.minusFourteenthSpace = true;
+    }
+    if (board[indexOfBoardPiece - 18] === null && cells[indexOfBoardPiece - 18].classList.contains("noPieceHere") !== true
+    && board[indexOfBoardPiece - 9] < 12) {
+        selectedPiece.minusEighteenthSpace = true;
+    }
+    givePieceBorder();
+    console.log(selectedPiece)
+}
 
+function givePieceBorder() {
+    
 }
 
 // Changes the board states data on the back end
