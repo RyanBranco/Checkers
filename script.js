@@ -21,8 +21,8 @@ let findPiece = function (pieceId) {
 
 // html referenes
 const cells = document.querySelectorAll("td");
-const redsPieces = document.querySelectorAll("p");
-const blacksPieces = document.querySelectorAll("span")
+let redsPieces = document.querySelectorAll("p");
+let blacksPieces = document.querySelectorAll("span")
 const redTurnText = document.querySelector("#red-turn-text");
 const blackTurntext = document.querySelector("#black-turn-text");
 
@@ -247,18 +247,31 @@ function makeMove(number) {
     document.getElementById(selectedPiece.pieceId).remove();
     cells[selectedPiece.indexOfBoardPiece].innerHTML = "";
     if (turn) {
-        cells[selectedPiece.indexOfBoardPiece + number].innerHTML = `<p class="red-piece" id="${selectedPiece.pieceId}"></p>`;
+        if (selectedPiece.isKing) {
+            cells[selectedPiece.indexOfBoardPiece + number].innerHTML = `<p class="red-piece" id="${selectedPiece.pieceId}"></p>`;
+            redsPieces = document.querySelectorAll("p");
+        } else {
+            cells[selectedPiece.indexOfBoardPiece + number].innerHTML = `<p class="red-piece" id="${selectedPiece.pieceId}"></p>`;
+            redsPieces = document.querySelectorAll("p");
+        }
     } else {
-        cells[selectedPiece.indexOfBoardPiece + number].innerHTML = `<span class="black-piece" id="${selectedPiece.pieceId}"></span>`;
+        if (selectedPiece.isKing) {
+            cells[selectedPiece.indexOfBoardPiece + number].innerHTML = `<span class="black-piece" id="${selectedPiece.pieceId}"></span>`;
+            blacksPieces = document.querySelectorAll("span");
+        } else {
+            cells[selectedPiece.indexOfBoardPiece + number].innerHTML = `<span class="black-piece" id="${selectedPiece.pieceId}"></span>`;
+            blacksPieces = document.querySelectorAll("span");
+        }
     }
 
-    if (number === 14 || number === -14) {
-        changeData(selectedPiece.indexOfBoardPiece, selectedpiece.indexOfBoardPiece + number, indexOfBoardPiece + 7);
-    } else if (number === 18 || number === -18) {
-        changeData(selectedPiece.indexOfBoardPiece, selectedpiece.indexOfBoardPiece + number, indexOfBoardPiece + 9);
-    }
     let indexOfPiece = selectedPiece.indexOfBoardPiece
-    changeData(indexOfPiece, indexOfPiece + number);
+    if (number === 14 || number === -14) {
+        changeData(indexOfPiece, indexOfPiece + number, indexOfPiece + number / 2);
+    } else if (number === 18 || number === -18) {
+        changeData(indexOfPiece, indexOfPiece + number, indexOfPiece + number / 2);
+    } else {
+        changeData(indexOfPiece, indexOfPiece + number);
+    }
 }
 
 // Changes the board states data on the back end
@@ -273,11 +286,11 @@ function changeData(indexOfBoardPiece, modifiedIndex, removePiece) {
     }
     if (removePiece) {
         board[removePiece] = null;
-        if (turn && pieceId < 12) {
+        if (turn && selectedPiece.pieceId < 12) {
             cells[removePiece].innerHTML = "";
             blackScore--
         }
-        if (turn === false && pieceId >= 12) {
+        if (turn === false && selectedPiece.pieceId >= 12) {
             cells[removePiece].innerHTML = "";
             redScore--
         }
@@ -293,7 +306,7 @@ function changePlayer() {
         turn = false;
         redTurnText.style.color = "lightGrey";
         blackTurntext.style.color = "black";
-    } else if (turn === false) {
+    } else {
         turn = true;
         blackTurntext.style.color = "lightGrey";
         redTurnText.style.color = "black";
@@ -324,7 +337,7 @@ function checkForWin() {
     } else if (redScore === 0) {
         blackTurntext.style.color = "black";
         redTurnText.textContent = "";
-        blackTurntext.textContent = "BLACK WINS!"
+        blackTurntext.textContent = "BLACK WINS!";
     }
     givePiecesEventListeners();
 }
