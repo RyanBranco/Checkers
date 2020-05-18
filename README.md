@@ -8,7 +8,6 @@ Checkers browser game for player vs. player
 
 * Future improvments:
   * Double jumps
-  * Find ways to shorten code
   * Make wins more extravagant
   * Create a reset button if you want to play again (instead of refreshing)
   * Create a player vs. CPU mode
@@ -17,6 +16,6 @@ Checkers browser game for player vs. player
 
 Screenshots:
 
-![checkers game](Images/checkersscreenshot.png "Checkers")
+![checkers game](Images/checkersgame.png "Checkers")
 
 ![win](Images/checkerswin.png "Checkers win")

@@ -25,6 +25,7 @@ let redsPieces = document.querySelectorAll("p");
 let blacksPieces = document.querySelectorAll("span")
 const redTurnText = document.querySelectorAll(".red-turn-text");
 const blackTurntext = document.querySelectorAll(".black-turn-text");
+const divider = document.querySelector("#divider")
 
 // player properties
 let turn = true;
@@ -315,13 +316,19 @@ function removeEventListeners() {
 // Checks for a win
 function checkForWin() {
     if (blackScore === 0) {
-        redTurnText.style.color = "black";
-        blackTurntext.textContent = "";
-        redTurnText.textContent = "RED WINS!";
+        divider.style.display = "none";
+        for (let i = 0; i < redTurnText.length; i++) {
+            redTurnText[i].style.color = "black";
+            blackTurntext[i].style.display = "none";
+            redTurnText[i].textContent = "RED WINS!";
+        }
     } else if (redScore === 0) {
-        blackTurntext.style.color = "black";
-        redTurnText.textContent = "";
-        blackTurntext.textContent = "BLACK WINS!";
+        divider.style.display = "none";
+        for (let i = 0; i < blackTurntext.length; i++) {            
+            blackTurntext[i].style.color = "black";
+            redTurnText[i].style.display = "none";
+            blackTurntext[i].textContent = "BLACK WINS!";
+        }
     }
     changePlayer();
 }

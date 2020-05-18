@@ -156,7 +156,7 @@ span {
     }
 }
 
-@media screen and (max-width: 345px or max-height: 630) {
+@media screen and (max-width: 345px) {
     .red-piece {
         height: 2.5vw;
         width: 2.5vw;
