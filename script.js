@@ -23,8 +23,8 @@ let findPiece = function (pieceId) {
 const cells = document.querySelectorAll("td");
 let redsPieces = document.querySelectorAll("p");
 let blacksPieces = document.querySelectorAll("span")
-const redTurnText = document.querySelector("#red-turn-text");
-const blackTurntext = document.querySelector("#black-turn-text");
+const redTurnText = document.querySelectorAll(".red-turn-text");
+const blackTurntext = document.querySelectorAll(".black-turn-text");
 
 // player properties
 let turn = true;
@@ -330,12 +330,16 @@ function checkForWin() {
 function changePlayer() {
     if (turn) {
         turn = false;
-        redTurnText.style.color = "lightGrey";
-        blackTurntext.style.color = "black";
+        for (let i = 0; i < redTurnText.length; i++) {
+            redTurnText[i].style.color = "lightGrey";
+            blackTurntext[i].style.color = "black";
+        }
     } else {
         turn = true;
-        blackTurntext.style.color = "lightGrey";
-        redTurnText.style.color = "black";
+        for (let i = 0; i < blackTurntext.length; i++) {
+            blackTurntext[i].style.color = "lightGrey";
+            redTurnText[i].style.color = "black";
+        }
     }
     givePiecesEventListeners();
 }
