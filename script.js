@@ -161,19 +161,19 @@ function checkAvailableJumpSpaces() {
         }
     } else {
         if (board[selectedPiece.indexOfBoardPiece + 14] === null && cells[selectedPiece.indexOfBoardPiece + 14].classList.contains("noPieceHere") !== true
-        && board[selectedPiece.indexOfBoardPiece + 7] < 12) {
+        && board[selectedPiece.indexOfBoardPiece + 7] < 12 && board[selectedPiece.indexOfBoardPiece + 7] !== null) {
             selectedPiece.fourteenthSpace = true;
         }
         if (board[selectedPiece.indexOfBoardPiece + 18] === null && cells[selectedPiece.indexOfBoardPiece + 18].classList.contains("noPieceHere") !== true
-        && board[selectedPiece.indexOfBoardPiece + 9] < 12) {
+        && board[selectedPiece.indexOfBoardPiece + 9] < 12 && board[selectedPiece.indexOfBoardPiece + 9] !== null) {
             selectedPiece.eighteenthSpace = true;
         }
         if (board[selectedPiece.indexOfBoardPiece - 14] === null && cells[selectedPiece.indexOfBoardPiece - 14].classList.contains("noPieceHere") !== true
-        && board[selectedPiece.indexOfBoardPiece - 7] < 12) {
+        && board[selectedPiece.indexOfBoardPiece - 7] < 12 && board[selectedPiece.indexOfBoardPiece - 7] !== null) {
             selectedPiece.minusFourteenthSpace = true;
         }
         if (board[selectedPiece.indexOfBoardPiece - 18] === null && cells[selectedPiece.indexOfBoardPiece - 18].classList.contains("noPieceHere") !== true
-        && board[selectedPiece.indexOfBoardPiece - 9] < 12) {
+        && board[selectedPiece.indexOfBoardPiece - 9] < 12&& board[selectedPiece.indexOfBoardPiece - 9] !== null) {
             selectedPiece.minusEighteenthSpace = true;
         }
     }
@@ -237,7 +237,7 @@ function giveCellsClick() {
     if (selectedPiece.minusEighteenthSpace) {
         cells[selectedPiece.indexOfBoardPiece - 18].setAttribute("onclick", "makeMove(-18)");
     }
-    console.log(selectedPiece);
+    console.log(selectedPiece)
 }
 
 /* v when the cell is clicked v */
@@ -248,7 +248,7 @@ function makeMove(number) {
     cells[selectedPiece.indexOfBoardPiece].innerHTML = "";
     if (turn) {
         if (selectedPiece.isKing) {
-            cells[selectedPiece.indexOfBoardPiece + number].innerHTML = `<p class="red-piece" id="${selectedPiece.pieceId}"></p>`;
+            cells[selectedPiece.indexOfBoardPiece + number].innerHTML = `<p class="red-piece king" id="${selectedPiece.pieceId}"></p>`;
             redsPieces = document.querySelectorAll("p");
         } else {
             cells[selectedPiece.indexOfBoardPiece + number].innerHTML = `<p class="red-piece" id="${selectedPiece.pieceId}"></p>`;
@@ -256,7 +256,7 @@ function makeMove(number) {
         }
     } else {
         if (selectedPiece.isKing) {
-            cells[selectedPiece.indexOfBoardPiece + number].innerHTML = `<span class="black-piece" id="${selectedPiece.pieceId}"></span>`;
+            cells[selectedPiece.indexOfBoardPiece + number].innerHTML = `<span class="black-piece king" id="${selectedPiece.pieceId}"></span>`;
             blacksPieces = document.querySelectorAll("span");
         } else {
             cells[selectedPiece.indexOfBoardPiece + number].innerHTML = `<span class="black-piece" id="${selectedPiece.pieceId}"></span>`;
@@ -265,9 +265,7 @@ function makeMove(number) {
     }
 
     let indexOfPiece = selectedPiece.indexOfBoardPiece
-    if (number === 14 || number === -14) {
-        changeData(indexOfPiece, indexOfPiece + number, indexOfPiece + number / 2);
-    } else if (number === 18 || number === -18) {
+    if (number === 14 || number === -14 || number === 18 || number === -18) {
         changeData(indexOfPiece, indexOfPiece + number, indexOfPiece + number / 2);
     } else {
         changeData(indexOfPiece, indexOfPiece + number);
@@ -296,21 +294,7 @@ function changeData(indexOfBoardPiece, modifiedIndex, removePiece) {
         }
     }
     resetSelectedPieceProperties();
-    removeCellonclick()
-    changePlayer();
-}
-
-// Switches players turn
-function changePlayer() {
-    if (turn) {
-        turn = false;
-        redTurnText.style.color = "lightGrey";
-        blackTurntext.style.color = "black";
-    } else {
-        turn = true;
-        blackTurntext.style.color = "lightGrey";
-        redTurnText.style.color = "black";
-    }
+    removeCellonclick();
     removeEventListeners();
 }
 
@@ -338,6 +322,20 @@ function checkForWin() {
         blackTurntext.style.color = "black";
         redTurnText.textContent = "";
         blackTurntext.textContent = "BLACK WINS!";
+    }
+    changePlayer();
+}
+
+// Switches players turn
+function changePlayer() {
+    if (turn) {
+        turn = false;
+        redTurnText.style.color = "lightGrey";
+        blackTurntext.style.color = "black";
+    } else {
+        turn = true;
+        blackTurntext.style.color = "lightGrey";
+        redTurnText.style.color = "black";
     }
     givePiecesEventListeners();
 }
