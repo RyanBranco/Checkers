@@ -13,1275 +13,335 @@ const board = [
 
 /*---------- Cached Variables ----------*/
 
-// parses pieceId's and returns the index of that pieces place on the board
-let parse = function (pieceId) {
+// parses pieceId's and returns the index of that piece's place on the board
+let findPiece = function (pieceId) {
     let parsed = parseInt(pieceId);
     return board.indexOf(parsed);
 };
 
-/* html referenes */
+// html referenes
 const cells = document.querySelectorAll("td");
 let redsPieces = document.querySelectorAll("p");
 let blacksPieces = document.querySelectorAll("span")
-const redTurnText = document.querySelector("#red-turn-text");
-const blackTurntext = document.querySelector("#black-turn-text");
+const redTurnText = document.querySelectorAll(".red-turn-text");
+const blackTurntext = document.querySelectorAll(".black-turn-text");
 
-/* player properties */
+// player properties
 let turn = true;
 let redScore = 12;
 let blackScore = 12;
+let playerPieces;
 
-/* piece properties */
-let pieceId;
-let indexOfBoardPiece;
-let isKing = false;
-let seventhSpace = false;
-let ninthSpace = false;
-let fourteenthSpace = false;
-let eighteenthSpace = false;
-let kingSeventhSpace = false;
-let kingNinthSpace = false;
-let kingFourteenthSpace = false;
-let kingEighteenthSpace = false;
-
-/* used to help remove event listeners if selected piece is changed */
-let tempSeven = [];
-let tempNine = [];
-let tempFourteen = [];
-let tempEighteen = [];
-let tempKingSeven = [];
-let tempKingNine = [];
-let tempKingFourteen = [];
-let tempKingEighteen = [];
+// selected piece properties
+let selectedPiece = {
+    pieceId: -1,
+    indexOfBoardPiece: -1,
+    isKing: false,
+    seventhSpace: false,
+    ninthSpace: false,
+    fourteenthSpace: false,
+    eighteenthSpace: false,
+    minusSeventhSpace: false,
+    minusNinthSpace: false,
+    minusFourteenthSpace: false,
+    minusEighteenthSpace: false
+}
 
 /*---------- Event Listeners ----------*/
 
+//initialize event listeners on pieces
 function givePiecesEventListeners() {
-    for (let i = 0; i < redsPieces.length; i++) {
-        redsPieces[i].addEventListener("click", getAvailableSpaces);
-    }
-
-    for (let i = 0; i < blacksPieces.length; i++) {
-        blacksPieces[i].addEventListener("click", getAvailableSpaces);
+    if (turn) {
+        for (let i = 0; i < redsPieces.length; i++) {
+            redsPieces[i].addEventListener("click", getPlayerPieces);
+        }
+    } else {
+        for (let i = 0; i < blacksPieces.length; i++) {
+            blacksPieces[i].addEventListener("click", getPlayerPieces);
+        }
     }
 }
 
 /*---------- Logic ----------*/
 
-function getAvailableSpaces(event) {
-
-    /* removes the previous event listener if piece target is changed */
-    if (turn && pieceId < 12) {
-        if (tempSeven[0]) {
-            cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove)
-            tempSeven.pop();
-            //remove tempKingSeven etc. for all of these here
-            seventhSpace = false;
-        }
-        if (tempNine[0]) {
-            cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove)
-            tempNine.pop();
-            ninthSpace = false;
-        }
-        if (tempFourteen[0]) {
-            cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove)
-            tempFourteen.pop();
-            fourteenthSpace = false;
-        }
-        if (tempEighteen[0]) {
-            cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove)
-            tempEighteen.pop();
-            eighteenthSpace = false;
-        }
-        if (tempKingSeven[0]) {
-            cells[indexOfBoardPiece - 7].removeEventListener("click", kingSeventhMove)
-            tempKingSeven.pop();
-            kingSeventhSpace = false;
-        }
-        if (tempKingNine[0]) {
-            cells[indexOfBoardPiece - 9].removeEventListener("click", kingNinthMove)
-            tempKingNine.pop();
-            kingNinthSpace = false;
-        }
-        if (tempKingFourteen[0]) {
-            cells[indexOfBoardPiece - 14].removeEventListener("click", kingFourteenthMove)
-            tempKingFourteen.pop();
-            kingFourteenthSpace = false;
-        }
-        if (tempKingEighteen[0]) {
-            cells[indexOfBoardPiece - 18].removeEventListener("click", kingEighteenthMove)
-            tempKingEighteen.pop();
-            kingFourteenthSpace = false;
-        }
-    }
-    if (turn === false && pieceId >= 12) {
-        if (tempSeven[0]) {
-            cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
-            tempSeven.pop();
-            seventhSpace = false;
-        }
-        if (tempNine[0]) {
-            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
-            tempNine.pop();
-            ninthSpace = false;
-        }
-        if (tempFourteen[0]) {
-            cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
-            tempFourteen.pop();
-            fourteenthSpace = false;
-        }
-        if (tempEighteen[0]) {
-            cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
-            tempEighteen.pop();
-            eighteenthSpace = false;
-        }
-        if (tempKingSeven[0]) {
-            cells[indexOfBoardPiece + 7].removeEventListener("click", kingSeventhMove)
-            tempKingSeven.pop();
-            seventhSpace = false;
-        }
-        if (tempKingNine[0]) {
-            cells[indexOfBoardPiece + 9].removeEventListener("click", kingNinthMove)
-            tempKingNine.pop();
-            ninthSpace = false;
-        }
-        if (tempKingFourteen[0]) {
-            cells[indexOfBoardPiece + 14].removeEventListener("click", kingFourteenthMove)
-            tempKingFourteen.pop();
-            fourteenthSpace = false;
-        }
-        if (tempKingEighteen[0]) {
-            cells[indexOfBoardPiece + 18].removeEventListener("click", kingEighteenthMove)
-            tempKingEighteen.pop();
-            eighteenthSpace = false;
-        }
-    }
-
-    pieceId = parseInt(event.target.id);
-    indexOfBoardPiece = parse(pieceId);
-
-    if (document.getElementById(pieceId).classList.contains("king")) {
-        isKing = true;
+// holds the length of the players piece count
+function getPlayerPieces() {
+    if (turn) {
+        playerPieces = redsPieces;
     } else {
-        isKing = false;
+        playerPieces = blacksPieces;
     }
+    removeCellonclick();
+    resetBorders();
+}
 
-    if (turn && pieceId < 12) {
-        for (let i = 0; i < redsPieces.length; i++) {
-            if (board[indexOfBoardPiece + 7] === null && cells[indexOfBoardPiece + 7].classList.contains("red") !== true) {
-                seventhSpace = true;
-                redsPieces[i].style.border = "1px solid white";
-                document.getElementById(pieceId).style.border = "3px solid green";
-            }
-            if (board[indexOfBoardPiece + 9] === null && cells[indexOfBoardPiece + 9].classList.contains("red") !== true) {
-                ninthSpace = true;
-                redsPieces[i].style.border = "1px solid white";
-                document.getElementById(pieceId).style.border = "3px solid green";
-            }
-            if (board[indexOfBoardPiece + 14] === null && cells[indexOfBoardPiece + 14].classList.contains("red") !== true && board[indexOfBoardPiece + 7] >= 12) {
-                fourteenthSpace = true;
-                redsPieces[i].style.border = "1px solid white";
-                document.getElementById(pieceId).style.border = "3px solid green";
-            }
-            if (board[indexOfBoardPiece + 18] === null && cells[indexOfBoardPiece + 18].classList.contains("red") !== true && board[indexOfBoardPiece + 9] >= 12) {
-                eighteenthSpace = true;
-                redsPieces[i].style.border = "1px solid white";
-                document.getElementById(pieceId).style.border = "3px solid green";
-            }
-            if (isKing) {
-                if (board[indexOfBoardPiece - 7] === null && cells[indexOfBoardPiece - 7].classList.contains("red") !== true) {
-                    kingSeventhSpace = true;
-                    redsPieces[i].style.border = "1px solid white";
-                    document.getElementById(pieceId).style.border = "3px solid green";
-                }
-                if (board[indexOfBoardPiece - 9] === null && cells[indexOfBoardPiece - 9].classList.contains("red") !== true) {
-                    kingNinthSpace = true;
-                    redsPieces[i].style.border = "1px solid white";
-                    document.getElementById(pieceId).style.border = "3px solid green";
-                }
-                if (board[indexOfBoardPiece - 14] === null && cells[indexOfBoardPiece - 14].classList.contains("red") !== true && board[indexOfBoardPiece - 7] >= 12) {
-                    kingFourteenthSpace = true;
-                    redsPieces[i].style.border = "1px solid white";
-                    document.getElementById(pieceId).style.border = "3px solid green";
-                }
-                if (board[indexOfBoardPiece - 18] === null && cells[indexOfBoardPiece - 18].classList.contains("red") !== true && board[indexOfBoardPiece - 9] >= 12) {
-                    kingEighteenthSpace = true;
-                    redsPieces[i].style.border = "1px solid white";
-                    document.getElementById(pieceId).style.border = "3px solid green";
-                }
-            }
-        }
-        giveCellsClick();
-    }
-
-    if (turn === false && pieceId >= 12) {
-        for (let i = 0; i < blacksPieces.length; i++) {
-            if (board[indexOfBoardPiece - 7] === null && cells[indexOfBoardPiece - 7].classList.contains("red") !== true) {
-                seventhSpace = true;
-                blacksPieces[i].style.border = "1px solid white";
-                document.getElementById(pieceId).style.border = "3px solid green";
-            }
-            if (board[indexOfBoardPiece - 9] === null && cells[indexOfBoardPiece - 9].classList.contains("red") !== true) {
-                ninthSpace = true;
-                blacksPieces[i].style.border = "1px solid white";
-                document.getElementById(pieceId).style.border = "3px solid green";
-            }
-            if (board[indexOfBoardPiece - 14] === null && cells[indexOfBoardPiece - 14].classList.contains("red") !== true && board[indexOfBoardPiece - 7] < 12 && board[indexOfBoardPiece - 7] !== null) {
-                fourteenthSpace = true;
-                blacksPieces[i].style.border = "1px solid white";
-                document.getElementById(pieceId).style.border = "3px solid green";
-            }
-            if (board[indexOfBoardPiece - 18] === null && cells[indexOfBoardPiece - 18].classList.contains("red") !== true && board[indexOfBoardPiece - 9] < 12 && board[indexOfBoardPiece - 9] !== null) {
-                eighteenthSpace = true;
-                blacksPieces[i].style.border = "1px solid white";
-                document.getElementById(pieceId).style.border = "3px solid green";
-            }
-            if (isKing) {
-                if (board[indexOfBoardPiece + 7] === null && cells[indexOfBoardPiece + 7].classList.contains("red") !== true) {
-                    kingSeventhSpace = true;
-                    blacksPieces[i].style.border = "1px solid white";
-                    document.getElementById(pieceId).style.border = "3px solid green";
-                }
-                if (board[indexOfBoardPiece + 9] === null && cells[indexOfBoardPiece + 9].classList.contains("red") !== true) {
-                    kingNinthSpace = true;
-                    blacksPieces[i].style.border = "1px solid white";
-                    document.getElementById(pieceId).style.border = "3px solid green";
-                }
-                if (board[indexOfBoardPiece + 14] === null && cells[indexOfBoardPiece + 14].classList.contains("red") !== true && board[indexOfBoardPiece + 7] < 12 && board[indexOfBoardPiece + 7] !== null) {
-                    kingFourteenthSpace = true;
-                    blacksPieces[i].style.border = "1px solid white";
-                    document.getElementById(pieceId).style.border = "3px solid green";
-                }
-                if (board[indexOfBoardPiece + 18] === null && cells[indexOfBoardPiece + 18].classList.contains("red") !== true && board[indexOfBoardPiece + 9] < 12 && board[indexOfBoardPiece + 9] !== null) {
-                    kingEighteenthSpace = true;
-                    blacksPieces[i].style.border = "1px solid white";
-                    document.getElementById(pieceId).style.border = "3px solid green";
-                }
-            }
-        }
-        giveCellsClick();
+// removes possible moves from old selected piece (* this is needed because the user might re-select a piece *)
+function removeCellonclick() {
+    for (let i = 0; i < cells.length; i++) {
+        cells[i].removeAttribute("onclick");
     }
 }
 
-function giveCellsClick() {
-    if (turn && pieceId < 12) {
-        if (seventhSpace) {
-            cells[indexOfBoardPiece + 7].addEventListener("click", seventhMove);
-            tempSeven.push(indexOfBoardPiece + 7);
-        }
-        if (ninthSpace) {
-            cells[indexOfBoardPiece + 9].addEventListener("click", ninthMove);
-            tempNine.push(indexOfBoardPiece + 9);
-        }
-        if (fourteenthSpace) {
-            cells[indexOfBoardPiece + 14].addEventListener("click", fourteenthMove);
-            tempFourteen.push(indexOfBoardPiece + 14);
-        }
-        if (eighteenthSpace) {
-            cells[indexOfBoardPiece + 18].addEventListener("click", eighteenthMove);
-            tempEighteen.push(indexOfBoardPiece + 18);
-        }
-        if (isKing) {
-            if (kingSeventhSpace) {
-                cells[indexOfBoardPiece - 7].addEventListener("click", kingSeventhMove);
-                tempKingSeven.push(indexOfBoardPiece - 7);
-            }
-            if (kingNinthSpace) {
-                cells[indexOfBoardPiece - 9].addEventListener("click", kingNinthMove);
-                tempKingNine.push(indexOfBoardPiece - 9);
-            }
-            if (kingFourteenthSpace) {
-                cells[indexOfBoardPiece - 14].addEventListener("click", kingFourteenthMove);
-                tempKingFourteen.push(indexOfBoardPiece - 14);
-            }
-            if (kingEighteenthSpace) {
-                cells[indexOfBoardPiece - 18].addEventListener("click", kingEighteenthMove);
-                tempKingEighteen.push(indexOfBoardPiece - 18);
-            }
-        }
+// resets borders to default
+function resetBorders() {
+    for (let i = 0; i < playerPieces.length; i++) {
+        playerPieces[i].style.border = "1px solid white";
     }
-
-    if (turn === false && pieceId >= 12) {
-        if (seventhSpace) {
-            cells[indexOfBoardPiece - 7].addEventListener("click", seventhMove);
-            tempSeven.push(indexOfBoardPiece - 7);
-        }
-        if (ninthSpace) {
-            cells[indexOfBoardPiece - 9].addEventListener("click", ninthMove);
-            tempNine.push(indexOfBoardPiece - 9);
-        }
-        if (fourteenthSpace) {
-            cells[indexOfBoardPiece - 14].addEventListener("click", fourteenthMove);
-            tempFourteen.push(indexOfBoardPiece - 14);
-        }
-        if (eighteenthSpace) {
-            cells[indexOfBoardPiece - 18].addEventListener("click", eighteenthMove);
-            tempEighteen.push(indexOfBoardPiece - 18);
-        }
-        if (isKing) {
-            if (kingSeventhSpace) {
-                cells[indexOfBoardPiece + 7].addEventListener("click", kingSeventhMove);
-                tempKingSeven.push(indexOfBoardPiece + 7);
-            }
-            if (kingNinthSpace) {
-                cells[indexOfBoardPiece + 9].addEventListener("click", kingNinthMove);
-                tempKingNine.push(indexOfBoardPiece + 9);
-            }
-            if (kingFourteenthSpace) {
-                cells[indexOfBoardPiece + 14].addEventListener("click", kingFourteenthMove);
-                tempKingFourteen.push(indexOfBoardPiece + 14);
-            }
-            if (kingEighteenthSpace) {
-                cells[indexOfBoardPiece + 18].addEventListener("click", kingEighteenthMove);
-                tempKingEighteen.push(indexOfBoardPiece + 18);
-            }
-        }
-    }
-    console.log("pieceId: " + pieceId);
-    console.log("index: " + indexOfBoardPiece);
-    console.log("isKing: " + isKing);
-    console.log("Seventh: " + seventhSpace);
-    console.log("ninth: " + ninthSpace);
-    console.log("fourteenth: " + fourteenthSpace);
-    console.log("eighteenth: " + eighteenthSpace);
-    console.log("turn: " + turn);
-    console.log("kingsSeventh: " + kingSeventhSpace);
-    console.log("kingsNinth: " + kingNinthSpace);
-    console.log("kingsFourteenth: " + kingFourteenthSpace);
-    console.log("kingsEighteenth: " + kingEighteenthSpace);
-    console.log("tempSeven: " + tempSeven);
-    console.log("tempNine: " + tempNine);
-    console.log("tempFourteen: " + tempFourteen);
-    console.log("tempEighteen: " + tempEighteen);
-    console.log("tempKingSeven: " + tempKingSeven);
-    console.log("tempKingNine: " + tempKingNine);
-    console.log("tempKingFourteen: " + tempKingFourteen);
-    console.log("tempKingEighteen: " + tempKingEighteen);
-    console.log("")
+    resetSelectedPieceProperties();
+    getSelectedPiece();
 }
 
-function seventhMove() {
-    if (turn && pieceId < 12 && isKing === false) {
-        document.getElementById(pieceId).remove();
-        cells[indexOfBoardPiece].innerHTML = "";
-        cells[indexOfBoardPiece + 7].innerHTML = `<p class="red-piece" id="${pieceId}"></p>`;
-        redsPieces = document.querySelectorAll("p");
-        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-        if (seventhSpace) {
-            cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
-            tempSeven.pop();
-        }
-        if (ninthSpace) {
-            cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
-            tempNine.pop();
-        }
-        if (fourteenthSpace) {
-            cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
-            tempFourteen.pop();
-        }
-        if (eighteenthSpace) {
-            cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
-            tempEighteen.pop();
-        }
-        changeData(indexOfBoardPiece, indexOfBoardPiece + 7);
-    }
-    if (turn && pieceId < 12 && isKing) {
-        document.getElementById(pieceId).remove();
-        cells[indexOfBoardPiece].innerHTML = "";
-        cells[indexOfBoardPiece + 7].innerHTML = `<p class="red-piece king" id="${pieceId}"></p>`;
-        redsPieces = document.querySelectorAll("p");
-        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-        if (seventhSpace) {
-            cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
-            tempSeven.pop();
-        }
-        if (ninthSpace) {
-            cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
-            tempNine.pop();
-        }
-        if (fourteenthSpace) {
-            cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
-            tempFourteen.pop();
-        }
-        if (eighteenthSpace) {
-            cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
-            tempEighteen.pop();
-        }
-        if (kingSeventhSpace) {
-            cells[indexOfBoardPiece - 7].removeEventListener("click", kingSeventhMove);
-            tempKingSeven.pop();
-        }
-        if (kingNinthSpace) {
-            cells[indexOfBoardPiece - 9].removeEventListener("click", kingNinthMove);
-            tempKingNine.pop();
-        }
-        if (kingFourteenthSpace) {
-            cells[indexOfBoardPiece - 14].removeEventListener("click", kingFourteenthMove);
-            tempKingFourteen.pop();
-        }
-        if (kingEighteenthSpace) {
-            cells[indexOfBoardPiece - 18].removeEventListener("click", kingEighteenthMove);
-            tempKingEighteen.pop();
-        }
-        changeData(indexOfBoardPiece, indexOfBoardPiece + 7);
-    }
-
-    if (turn === false && pieceId >= 12 && isKing === false) {
-        document.getElementById(pieceId).remove();
-        cells[indexOfBoardPiece].innerHTML = "";
-        cells[indexOfBoardPiece - 7].innerHTML = `<span class="black-piece" id="${pieceId}"></span>`;
-        blacksPieces = document.querySelectorAll("span");
-        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-        if (seventhSpace) {
-            cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
-            tempSeven.pop();
-        }
-        if (ninthSpace) {
-            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
-            tempNine.pop();
-        }
-        if (fourteenthSpace) {
-            cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
-            tempFourteen.pop();
-        }
-        if (eighteenthSpace) {
-            cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
-            tempEighteen.pop();
-        }
-        changeData(indexOfBoardPiece, indexOfBoardPiece - 7);
-    }
-    if (turn === false && pieceId >= 12 && isKing) {
-        document.getElementById(pieceId).remove();
-        cells[indexOfBoardPiece].innerHTML = "";
-        cells[indexOfBoardPiece - 7].innerHTML = `<span class="black-piece king" id="${pieceId}"></span>`;
-        blacksPieces = document.querySelectorAll("span");
-        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-        if (seventhSpace) {
-            cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
-            tempSeven.pop();
-        }
-        if (ninthSpace) {
-            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
-            tempNine.pop();
-        }
-        if (fourteenthSpace) {
-            cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
-            tempFourteen.pop();
-        }
-        if (eighteenthSpace) {
-            cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
-            tempEighteen.pop();
-        }
-        if (kingSeventhSpace) {
-            cells[indexOfBoardPiece + 7].removeEventListener("click", kingSeventhMove)
-            tempKingSeven.pop();
-        }
-        if (kingNinthSpace) {
-            cells[indexOfBoardPiece + 9].removeEventListener("click", kingNinthMove)
-            tempKingNine.pop();
-        }
-        if (kingFourteenthSpace) {
-            cells[indexOfBoardPiece + 14].removeEventListener("click", kingFourteenthMove)
-            tempKingFourteen.pop();
-        }
-        if (kingEighteenthSpace) {
-            cells[indexOfBoardPiece + 18].removeEventListener("click", kingEighteenthMove)
-            tempKingEighteen.pop();
-        }
-        changeData(indexOfBoardPiece, indexOfBoardPiece - 7);
-    }
+//resets selected piece properties
+function resetSelectedPieceProperties() {
+    selectedPiece.pieceId = -1;
+    selectedPiece.pieceId = -1;
+    selectedPiece.isKing = false;
+    selectedPiece.seventhSpace = false;
+    selectedPiece.ninthSpace = false;
+    selectedPiece.fourteenthSpace = false;
+    selectedPiece.eighteenthSpace = false;
+    selectedPiece.minusSeventhSpace = false;
+    selectedPiece.minusNinthSpace = false;
+    selectedPiece.minusFourteenthSpace = false;
+    selectedPiece.minusEighteenthSpace = false;
 }
 
-function ninthMove() {
-    if (turn && pieceId < 12 && isKing === false) {
-        document.getElementById(pieceId).remove();
-        cells[indexOfBoardPiece].innerHTML = "";
-        cells[indexOfBoardPiece + 9].innerHTML = `<p class="red-piece" id="${pieceId}"></p>`;
-        redsPieces = document.querySelectorAll("p");
-        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-        if (seventhSpace) {
-            cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
-            tempSeven.pop();
-        }
-        if (ninthSpace) {
-            cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
-            tempNine.pop();
-        }
-        if (fourteenthSpace) {
-            cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
-            tempFourteen.pop();
-        }
-        if (eighteenthSpace) {
-            cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
-            tempEighteen.pop();
-        }
-        changeData(indexOfBoardPiece, indexOfBoardPiece + 9);
-    }
-    if (turn && pieceId < 12 && isKing) {
-        document.getElementById(pieceId).remove();
-        cells[indexOfBoardPiece].innerHTML = "";
-        cells[indexOfBoardPiece + 9].innerHTML = `<p class="red-piece king" id="${pieceId}"></p>`;
-        redsPieces = document.querySelectorAll("p");
-        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-        if (seventhSpace) {
-            cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
-            tempSeven.pop();
-        }
-        if (ninthSpace) {
-            cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
-            tempNine.pop();
-        }
-        if (fourteenthSpace) {
-            cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
-            tempFourteen.pop();
-        }
-        if (eighteenthSpace) {
-            cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
-            tempEighteen.pop();
-        }
-        if (kingSeventhSpace) {
-            cells[indexOfBoardPiece - 7].removeEventListener("click", kingSeventhMove);
-            tempKingSeven.pop();
-        }
-        if (kingNinthSpace) {
-            cells[indexOfBoardPiece - 9].removeEventListener("click", kingNinthMove);
-            tempKingNine.pop();
-        }
-        if (kingFourteenthSpace) {
-            cells[indexOfBoardPiece - 14].removeEventListener("click", kingFourteenthMove);
-            tempKingFourteen.pop();
-        }
-        if (kingEighteenthSpace) {
-            cells[indexOfBoardPiece - 18].removeEventListener("click", kingEighteenthMove);
-            tempKingEighteen.pop();
-        }
-        changeData(indexOfBoardPiece, indexOfBoardPiece + 9);
-    }
-
-    if (turn === false && pieceId >= 12 && isKing === false) {
-        document.getElementById(pieceId).remove();
-        cells[indexOfBoardPiece].innerHTML = "";
-        cells[indexOfBoardPiece - 9].innerHTML = `<span class="black-piece" id="${pieceId}"></span>`;
-        blacksPieces = document.querySelectorAll("span");
-        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-        if (seventhSpace) {
-            cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
-            tempSeven.pop();
-        }
-        if (ninthSpace) {
-            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
-            tempNine.pop();
-        }
-        if (fourteenthSpace) {
-            cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
-            tempFourteen.pop();
-        }
-        if (eighteenthSpace) {
-            cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
-            tempEighteen.pop();
-        }
-        changeData(indexOfBoardPiece, indexOfBoardPiece - 9);
-    }
-    if (turn === false && pieceId >= 12 && isKing) {
-        document.getElementById(pieceId).remove();
-        cells[indexOfBoardPiece].innerHTML = "";
-        cells[indexOfBoardPiece - 9].innerHTML = `<span class="black-piece king" id="${pieceId}"></span>`;
-        blacksPieces = document.querySelectorAll("span");
-        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-        if (seventhSpace) {
-            cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
-            tempSeven.pop();
-        }
-        if (ninthSpace) {
-            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
-            tempNine.pop();
-        }
-        if (fourteenthSpace) {
-            cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
-            tempFourteen.pop();
-        }
-        if (eighteenthSpace) {
-            cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
-            tempEighteen.pop();
-        }
-        if (kingSeventhSpace) {
-            cells[indexOfBoardPiece + 7].removeEventListener("click", kingSeventhMove)
-            tempKingSeven.pop();
-        }
-        if (kingNinthSpace) {
-            cells[indexOfBoardPiece + 9].removeEventListener("click", kingNinthMove)
-            tempKingNine.pop();
-        }
-        if (kingFourteenthSpace) {
-            cells[indexOfBoardPiece + 14].removeEventListener("click", kingFourteenthMove)
-            tempKingFourteen.pop();
-        }
-        if (kingEighteenthSpace) {
-            cells[indexOfBoardPiece + 18].removeEventListener("click", kingEighteenthMove)
-            tempKingEighteen.pop();
-        }
-        changeData(indexOfBoardPiece, indexOfBoardPiece - 9);
-    }
+// Gets ID and index of the board cell its on
+function getSelectedPiece() {
+    selectedPiece.pieceId = parseInt(event.target.id);
+    selectedPiece.indexOfBoardPiece = findPiece(selectedPiece.pieceId);
+    isPieceKing();
 }
 
-function fourteenthMove() {
-    if (turn && pieceId < 12) {
-        document.getElementById(pieceId).remove();
-        cells[indexOfBoardPiece].innerHTML = "";
-        cells[indexOfBoardPiece + 14].innerHTML = `<p class="red-piece" id="${pieceId}"></p>`;
-        redsPieces = document.querySelectorAll("p");
-        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-        if (seventhSpace) {
-            cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
-            tempSeven.pop();
-        }
-        if (ninthSpace) {
-            cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
-            tempNine.pop();
-        }
-        if (fourteenthSpace) {
-            cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
-            tempFourteen.pop();
-        }
-        if (eighteenthSpace) {
-            cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
-            tempEighteen.pop();
-        }
-        changeData(indexOfBoardPiece, indexOfBoardPiece + 14, indexOfBoardPiece + 7);
+// Checks if selected piece is a king
+function isPieceKing() {
+    if (document.getElementById(selectedPiece.pieceId).classList.contains("king")) {
+        selectedPiece.isKing = true;
+    } else {
+        selectedPiece.isKing = false;
     }
-    if (turn && pieceId < 12 && isKing) {
-        document.getElementById(pieceId).remove();
-        cells[indexOfBoardPiece].innerHTML = "";
-        cells[indexOfBoardPiece + 14].innerHTML = `<p class="red-piece king" id="${pieceId}"></p>`;
-        redsPieces = document.querySelectorAll("p");
-        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-        if (seventhSpace) {
-            cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
-            tempSeven.pop();
-        }
-        if (ninthSpace) {
-            cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
-            tempNine.pop();
-        }
-        if (fourteenthSpace) {
-            cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
-            tempFourteen.pop();
-        }
-        if (eighteenthSpace) {
-            cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
-            tempEighteen.pop();
-        }
-        if (kingSeventhSpace) {
-            cells[indexOfBoardPiece - 7].removeEventListener("click", kingSeventhMove);
-            tempKingSeven.pop();
-        }
-        if (kingNinthSpace) {
-            cells[indexOfBoardPiece - 9].removeEventListener("click", kingNinthMove);
-            tempKingNine.pop();
-        }
-        if (kingFourteenthSpace) {
-            cells[indexOfBoardPiece - 14].removeEventListener("click", kingFourteenthMove);
-            tempKingFourteen.pop();
-        }
-        if (kingEighteenthSpace) {
-            cells[indexOfBoardPiece - 18].removeEventListener("click", kingEighteenthMove);
-            tempKingEighteen.pop();
-        }
-        changeData(indexOfBoardPiece, indexOfBoardPiece + 14, indexOfBoardPiece + 7);
-    }
-
-    if (turn === false && pieceId >= 12 && isKing === false) {
-        document.getElementById(pieceId).remove();
-        cells[indexOfBoardPiece].innerHTML = "";
-        cells[indexOfBoardPiece - 14].innerHTML = `<span class="black-piece" id="${pieceId}"></span>`;
-        blacksPieces = document.querySelectorAll("span");
-        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-        if (seventhSpace) {
-            cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
-            tempSeven.pop();
-        }
-        if (ninthSpace) {
-            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
-            tempNine.pop();
-        }
-        if (fourteenthSpace) {
-            cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
-            tempFourteen.pop();
-        }
-        if (eighteenthSpace) {
-            cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
-            tempEighteen.pop();
-        }
-        changeData(indexOfBoardPiece, indexOfBoardPiece - 14, indexOfBoardPiece - 7);
-    }
-    if (turn === false && pieceId >= 12 && isKing) {
-        document.getElementById(pieceId).remove();
-        cells[indexOfBoardPiece].innerHTML = "";
-        cells[indexOfBoardPiece - 14].innerHTML = `<span class="black-piece king" id="${pieceId}"></span>`;
-        blacksPieces = document.querySelectorAll("span");
-        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-        if (seventhSpace) {
-            cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
-            tempSeven.pop();
-        }
-        if (ninthSpace) {
-            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
-            tempNine.pop();
-        }
-        if (fourteenthSpace) {
-            cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
-            tempFourteen.pop();
-        }
-        if (eighteenthSpace) {
-            cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
-            tempEighteen.pop();
-        }
-        if (kingSeventhSpace) {
-            cells[indexOfBoardPiece - 7].removeEventListener("click", kingSeventhMove)
-            tempKingSeven.pop();
-        }
-        if (kingNinthSpace) {
-            cells[indexOfBoardPiece - 9].removeEventListener("click", kingNinthMove)
-            tempKingNine.pop();
-        }
-        if (kingFourteenthSpace) {
-            cells[indexOfBoardPiece - 14].removeEventListener("click", kingFourteenthMove)
-            tempKingFourteen.pop();
-        }
-        if (kingEighteenthSpace) {
-            cells[indexOfBoardPiece - 18].removeEventListener("click", kingFighteenthMove)
-            tempKingEighteen.pop();
-        }
-        changeData(indexOfBoardPiece, indexOfBoardPiece - 14, indexOfBoardPiece - 7);
-    }
+    getAvailableSpaces();
 }
 
-function eighteenthMove() {
-    if (turn && pieceId < 12 && isKing === false) {
-        document.getElementById(pieceId).remove();
-        cells[indexOfBoardPiece].innerHTML = "";
-        cells[indexOfBoardPiece + 18].innerHTML = `<p class="red-piece" id="${pieceId}"></p>`;
-        redsPieces = document.querySelectorAll("p");
-        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-        if (seventhSpace) {
-            cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
-            tempSeven.pop();
-        }
-        if (ninthSpace) {
-            cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
-            tempNine.pop();
-        }
-        if (fourteenthSpace) {
-            cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
-            tempFourteen.pop();
-        }
-        if (eighteenthSpace) {
-            cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
-            tempEighteen.pop();
-        }
-        changeData(indexOfBoardPiece, indexOfBoardPiece + 18, indexOfBoardPiece + 9);
+// gets the moves that the selected piece can make
+function getAvailableSpaces() {
+    if (board[selectedPiece.indexOfBoardPiece + 7] === null && cells[selectedPiece.indexOfBoardPiece + 7].classList.contains("noPieceHere") !== true) {
+        selectedPiece.seventhSpace = true;
     }
-    if (turn && pieceId < 12 && isKing) {
-        document.getElementById(pieceId).remove();
-        cells[indexOfBoardPiece].innerHTML = "";
-        cells[indexOfBoardPiece + 18].innerHTML = `<p class="red-piece king" id="${pieceId}"></p>`;
-        redsPieces = document.querySelectorAll("p");
-        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-        if (seventhSpace) {
-            cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
-            tempSeven.pop();
-        }
-        if (ninthSpace) {
-            cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
-            tempNine.pop();
-        }
-        if (fourteenthSpace) {
-            cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
-            tempFourteen.pop();
-        }
-        if (eighteenthSpace) {
-            cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
-            tempEighteen.pop();
-        }
-        if (kingSeventhSpace) {
-            cells[indexOfBoardPiece + 7].removeEventListener("click", kingSeventhMove);
-            tempKingSeven.pop();
-        }
-        if (kingNinthSpace) {
-            cells[indexOfBoardPiece + 9].removeEventListener("click", kingNinthMove);
-            tempKingNine.pop();
-        }
-        if (kingFourteenthSpace) {
-            cells[indexOfBoardPiece + 14].removeEventListener("click", kingFourteenthMove);
-            tempKingFourteen.pop();
-        }
-        if (kingEighteenthSpace) {
-            cells[indexOfBoardPiece + 18].removeEventListener("click", kingEighteenthMove);
-            tempKingEighteen.pop();
-        }
-        changeData(indexOfBoardPiece, indexOfBoardPiece + 18, indexOfBoardPiece + 9);
+    if (board[selectedPiece.indexOfBoardPiece + 9] === null && cells[selectedPiece.indexOfBoardPiece + 9].classList.contains("noPieceHere") !== true) {
+        selectedPiece.ninthSpace = true;
     }
-
-    if (turn === false && pieceId >= 12 && isKing === false) {
-        document.getElementById(pieceId).remove();
-        cells[indexOfBoardPiece].innerHTML = "";
-        cells[indexOfBoardPiece - 18].innerHTML = `<span class="black-piece" id="${pieceId}"></span>`;
-        blacksPieces = document.querySelectorAll("span");
-        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-        if (seventhSpace) {
-            cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
-            tempSeven.pop();
-        }
-        if (ninthSpace) {
-            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
-            tempNine.pop();
-        }
-        if (fourteenthSpace) {
-            cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
-            tempFourteen.pop();
-        }
-        if (eighteenthSpace) {
-            cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
-            tempEighteen.pop();
-        }
-        changeData(indexOfBoardPiece, indexOfBoardPiece - 18, indexOfBoardPiece - 9);
+    if (board[selectedPiece.indexOfBoardPiece - 7] === null && cells[selectedPiece.indexOfBoardPiece - 7].classList.contains("noPieceHere") !== true) {
+        selectedPiece.minusSeventhSpace = true;
     }
-    if (turn === false && pieceId >= 12 && isKing) {
-        document.getElementById(pieceId).remove();
-        cells[indexOfBoardPiece].innerHTML = "";
-        cells[indexOfBoardPiece - 18].innerHTML = `<span class="black-piece king" id="${pieceId}"></span>`;
-        blacksPieces = document.querySelectorAll("span");
-        document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-        if (seventhSpace) {
-            cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove)
-            tempSeven.pop();
-        }
-        if (ninthSpace) {
-            cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove)
-            tempNine.pop();
-        }
-        if (fourteenthSpace) {
-            cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove)
-            tempFourteen.pop();
-        }
-        if (eighteenthSpace) {
-            cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove)
-            tempEighteen.pop();
-        }
-        if (kingSeventhSpace) {
-            cells[indexOfBoardPiece - 7].removeEventListener("click", kingSeventhMove)
-            tempKingSeven.pop();
-        }
-        if (kingNinthSpace) {
-            cells[indexOfBoardPiece - 9].removeEventListener("click", kingNinthMove)
-            tempKingNine.pop();
-        }
-        if (kingFourteenthSpace) {
-            cells[indexOfBoardPiece - 14].removeEventListener("click", kingFourteenthMove)
-            tempKingFourteen.pop();
-        }
-        if (kingEighteenthSpace) {
-            cells[indexOfBoardPiece - 18].removeEventListener("click", kingEighteenthMove)
-            tempkingEighteen.pop();
-        }
-        changeData(indexOfBoardPiece, indexOfBoardPiece - 18, indexOfBoardPiece - 9);
+    if (board[selectedPiece.indexOfBoardPiece - 9] === null && cells[selectedPiece.indexOfBoardPiece - 9].classList.contains("noPieceHere") !== true) {
+        selectedPiece.minusNinthSpace = true;
     }
+    checkAvailableJumpSpaces();
 }
 
-    function kingSeventhMove() {
-        if (turn && pieceId < 12) {
-            document.getElementById(pieceId).remove();
-            cells[indexOfBoardPiece].innerHTML = "";
-            cells[indexOfBoardPiece - 7].innerHTML = `<p class="red-piece king" id="${pieceId}"></p>`;
-            redsPieces = document.querySelectorAll("p");
-            document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-            if (seventhSpace) {
-                cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
-                tempSeven.pop();
-            }
-            if (ninthSpace) {
-                cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
-                tempNine.pop();
-            }
-            if (fourteenthSpace) {
-                cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
-                tempFourteen.pop();
-            }
-            if (eighteenthSpace) {
-                cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
-                tempEighteen.pop();
-            }
-            if (kingSeventhSpace) {
-                cells[indexOfBoardPiece - 7].removeEventListener("click", kingSeventhMove);
-                tempKingSeven.pop();
-            }
-            if (kingNinthSpace) {
-                cells[indexOfBoardPiece - 9].removeEventListener("click", kingNinthMove);
-                tempKingNine.pop();
-            }
-            if (kingFourteenthSpace) {
-                cells[indexOfBoardPiece - 14].removeEventListener("click", kingFourteenthMove);
-                tempKingFourteen.pop();
-            }
-            if (kingEighteenthSpace) {
-                cells[indexOfBoardPiece - 18].removeEventListener("click", kingEighteenthMove);
-                tempKingEighteen.pop();
-            }
-            changeData(indexOfBoardPiece, indexOfBoardPiece - 7);
+// gets the moves that the selected piece can jump
+function checkAvailableJumpSpaces() {
+    if (turn) {
+        if (board[selectedPiece.indexOfBoardPiece + 14] === null && cells[selectedPiece.indexOfBoardPiece + 14].classList.contains("noPieceHere") !== true
+        && board[selectedPiece.indexOfBoardPiece + 7] >= 12) {
+            selectedPiece.fourteenthSpace = true;
         }
-
-        if (turn === false && pieceId >= 12) {
-            document.getElementById(pieceId).remove();
-            cells[indexOfBoardPiece].innerHTML = "";
-            cells[indexOfBoardPiece + 7].innerHTML = `<span class="black-piece king" id="${pieceId}"></span>`;
-            blacksPieces = document.querySelectorAll("span");
-            document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-            if (seventhSpace) {
-                cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove);
-                tempSeven.pop();
-            }
-            if (ninthSpace) {
-                cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove);
-                tempNine.pop();
-            }
-            if (fourteenthSpace) {
-                cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove);
-                tempFourteen.pop();
-            }
-            if (eighteenthSpace) {
-                cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove);
-                tempEighteen.pop();
-            }
-            if (kingSeventhSpace) {
-                cells[indexOfBoardPiece + 7].removeEventListener("click", kingSeventhMove);
-                tempKingSeven.pop();
-            }
-            if (kingNinthSpace) {
-                cells[indexOfBoardPiece + 9].removeEventListener("click", kingNinthMove);
-                tempKingNine.pop();
-            }
-            if (kingFourteenthSpace) {
-                cells[indexOfBoardPiece + 14].removeEventListener("click", kingFourteenthMove);
-                tempKingFourteen.pop();
-            }
-            if (kingEighteenthSpace) {
-                cells[indexOfBoardPiece + 18].removeEventListener("click", kingEighteenthMove);
-                tempKingEighteen.pop();
-            }
-            changeData(indexOfBoardPiece, indexOfBoardPiece + 7);
+        if (board[selectedPiece.indexOfBoardPiece + 18] === null && cells[selectedPiece.indexOfBoardPiece + 18].classList.contains("noPieceHere") !== true
+        && board[selectedPiece.indexOfBoardPiece + 9] >= 12) {
+            selectedPiece.eighteenthSpace = true;
+        }
+        if (board[selectedPiece.indexOfBoardPiece - 14] === null && cells[selectedPiece.indexOfBoardPiece - 14].classList.contains("noPieceHere") !== true
+        && board[selectedPiece.indexOfBoardPiece - 7] >= 12) {
+            selectedPiece.minusFourteenthSpace = true;
+        }
+        if (board[selectedPiece.indexOfBoardPiece - 18] === null && cells[selectedPiece.indexOfBoardPiece - 18].classList.contains("noPieceHere") !== true
+        && board[selectedPiece.indexOfBoardPiece - 9] >= 12) {
+            selectedPiece.minusEighteenthSpace = true;
+        }
+    } else {
+        if (board[selectedPiece.indexOfBoardPiece + 14] === null && cells[selectedPiece.indexOfBoardPiece + 14].classList.contains("noPieceHere") !== true
+        && board[selectedPiece.indexOfBoardPiece + 7] < 12 && board[selectedPiece.indexOfBoardPiece + 7] !== null) {
+            selectedPiece.fourteenthSpace = true;
+        }
+        if (board[selectedPiece.indexOfBoardPiece + 18] === null && cells[selectedPiece.indexOfBoardPiece + 18].classList.contains("noPieceHere") !== true
+        && board[selectedPiece.indexOfBoardPiece + 9] < 12 && board[selectedPiece.indexOfBoardPiece + 9] !== null) {
+            selectedPiece.eighteenthSpace = true;
+        }
+        if (board[selectedPiece.indexOfBoardPiece - 14] === null && cells[selectedPiece.indexOfBoardPiece - 14].classList.contains("noPieceHere") !== true
+        && board[selectedPiece.indexOfBoardPiece - 7] < 12 && board[selectedPiece.indexOfBoardPiece - 7] !== null) {
+            selectedPiece.minusFourteenthSpace = true;
+        }
+        if (board[selectedPiece.indexOfBoardPiece - 18] === null && cells[selectedPiece.indexOfBoardPiece - 18].classList.contains("noPieceHere") !== true
+        && board[selectedPiece.indexOfBoardPiece - 9] < 12&& board[selectedPiece.indexOfBoardPiece - 9] !== null) {
+            selectedPiece.minusEighteenthSpace = true;
         }
     }
+    checkPieceConditions();
+}
 
-    function kingNinthMove() {
-        if (turn && pieceId < 12) {
-            document.getElementById(pieceId).remove();
-            cells[indexOfBoardPiece].innerHTML = "";
-            cells[indexOfBoardPiece - 9].innerHTML = `<p class="red-piece king" id="${pieceId}"></p>`;
-            redsPieces = document.querySelectorAll("p");
-            document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-            if (seventhSpace) {
-                cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
-                tempSeven.pop();
-            }
-            if (ninthSpace) {
-                cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
-                tempNine.pop();
-            }
-            if (fourteenthSpace) {
-                cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
-                tempFourteen.pop();
-            }
-            if (eighteenthSpace) {
-                cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
-                tempEighteen.pop();
-            }
-            if (kingSeventhSpace) {
-                cells[indexOfBoardPiece - 7].removeEventListener("click", kingSeventhMove);
-                tempKingSeven.pop();
-            }
-            if (kingNinthSpace) {
-                cells[indexOfBoardPiece - 9].removeEventListener("click", kingNinthMove);
-                tempKingNine.pop();
-            }
-            if (kingFourteenthSpace) {
-                cells[indexOfBoardPiece - 14].removeEventListener("click", kingFourteenthMove);
-                tempKingFourteen.pop();
-            }
-            if (kingEighteenthSpace) {
-                cells[indexOfBoardPiece - 18].removeEventListener("click", kingEighteenthMove);
-                tempKingEighteen.pop();
-            }
-            changeData(indexOfBoardPiece, indexOfBoardPiece - 9);
-        }
-
-        if (turn === false && pieceId >= 12) {
-            document.getElementById(pieceId).remove();
-            cells[indexOfBoardPiece].innerHTML = "";
-            cells[indexOfBoardPiece + 9].innerHTML = `<span class="black-piece king" id="${pieceId}"></span>`;
-            blacksPieces = document.querySelectorAll("span");
-            document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-            if (seventhSpace) {
-                cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove);
-                tempSeven.pop();
-            }
-            if (ninthSpace) {
-                cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove);
-                tempNine.pop();
-            }
-            if (fourteenthSpace) {
-                cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove);
-                tempFourteen.pop();
-            }
-            if (eighteenthSpace) {
-                cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove);
-                tempEighteen.pop();
-            }
-            if (kingSeventhSpace) {
-                cells[indexOfBoardPiece + 7].removeEventListener("click", kingSeventhMove);
-                tempKingSeven.pop();
-            }
-            if (kingNinthSpace) {
-                cells[indexOfBoardPiece + 9].removeEventListener("click", kingNinthMove);
-                tempKingNine.pop();
-            }
-            if (kingFourteenthSpace) {
-                cells[indexOfBoardPiece + 14].removeEventListener("click", kingFourteenthMove);
-                tempKingFourteen.pop();
-            }
-            if (kingEighteenthSpace) {
-                cells[indexOfBoardPiece + 18].removeEventListener("click", kingEighteenthMove);
-                tempKingEighteen.pop();
-            }
-            changeData(indexOfBoardPiece, indexOfBoardPiece + 9);
-        }
-    }
-
-    function kingFourteenthMove() {
-        if (turn && pieceId < 12) {
-            document.getElementById(pieceId).remove();
-            cells[indexOfBoardPiece].innerHTML = "";
-            cells[indexOfBoardPiece - 14].innerHTML = `<p class="red-piece king" id="${pieceId}"></p>`;
-            redsPieces = document.querySelectorAll("p");
-            document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-            if (seventhSpace) {
-                cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
-                tempSeven.pop();
-            }
-            if (ninthSpace) {
-                cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
-                tempNine.pop();
-            }
-            if (fourteenthSpace) {
-                cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
-                tempFourteen.pop();
-            }
-            if (eighteenthSpace) {
-                cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
-                tempEighteen.pop();
-            }
-            if (kingSeventhSpace) {
-                cells[indexOfBoardPiece - 7].removeEventListener("click", kingSeventhMove);
-                tempKingSeven.pop();
-            }
-            if (kingNinthSpace) {
-                cells[indexOfBoardPiece - 9].removeEventListener("click", kingNinthMove);
-                tempKingNine.pop();
-            }
-            if (kingFourteenthSpace) {
-                cells[indexOfBoardPiece - 14].removeEventListener("click", kingFourteenthMove);
-                tempKingFourteen.pop();
-            }
-            if (kingEighteenthSpace) {
-                cells[indexOfBoardPiece - 18].removeEventListener("click", kingEighteenthMove);
-                tempKingEighteen.pop();
-            }
-            changeData(indexOfBoardPiece, indexOfBoardPiece - 14, indexOfBoardPiece - 7);
-        }
-
-        if (turn === false && pieceId >= 12) {
-            document.getElementById(pieceId).remove();
-            cells[indexOfBoardPiece].innerHTML = "";
-            cells[indexOfBoardPiece + 14].innerHTML = `<span class="black-piece king" id="${pieceId}"></span>`;
-            blacksPieces = document.querySelectorAll("span");
-            document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-            if (seventhSpace) {
-                cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove);
-                tempSeven.pop();
-            }
-            if (ninthSpace) {
-                cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove);
-                tempNine.pop();
-            }
-            if (fourteenthSpace) {
-                cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove);
-                tempFourteen.pop();
-            }
-            if (eighteenthSpace) {
-                cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove);
-                tempEighteen.pop();
-            }
-            if (kingSeventhSpace) {
-                cells[indexOfBoardPiece + 7].removeEventListener("click", kingSeventhMove);
-                tempKingSeven.pop();
-            }
-            if (kingNinthSpace) {
-                cells[indexOfBoardPiece + 9].removeEventListener("click", kingNinthMove);
-                tempKingNine.pop();
-            }
-            if (kingFourteenthSpace) {
-                cells[indexOfBoardPiece + 14].removeEventListener("click", kingFourteenthSpace);
-                tempKingFourteen.pop();
-            }
-            if (kingEighteenthSpace) {
-                cells[indexOfBoardPiece + 18].removeEventListener("click", kingEighteenthMove);
-                tempKingEighteen.pop();
-            }
-            changeData(indexOfBoardPiece, indexOfBoardPiece + 14, indexOfBoardPiece + 7);
-        }
-    }
-
-    function kingEighteenthMove() {
-        if (turn && pieceId < 12) {
-            document.getElementById(pieceId).remove();
-            cells[indexOfBoardPiece].innerHTML = "";
-            cells[indexOfBoardPiece - 18].innerHTML = `<p class="red-piece king" id="${pieceId}"></p>`;
-            redsPieces = document.querySelectorAll("p");
-            document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-            if (seventhSpace) {
-                cells[indexOfBoardPiece + 7].removeEventListener("click", seventhMove);
-                tempSeven.pop();
-            }
-            if (ninthSpace) {
-                cells[indexOfBoardPiece + 9].removeEventListener("click", ninthMove);
-                tempNine.pop();
-            }
-            if (fourteenthSpace) {
-                cells[indexOfBoardPiece + 14].removeEventListener("click", fourteenthMove);
-                tempFourteen.pop();
-            }
-            if (eighteenthSpace) {
-                cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
-                tempEighteen.pop();
-            }
-            if (kingSeventhSpace) {
-                cells[indexOfBoardPiece - 7].removeEventListener("click", kingSeventhMove);
-                tempKingSeven.pop();
-            }
-            if (kingNinthSpace) {
-                cells[indexOfBoardPiece - 9].removeEventListener("click", kingNinthMove);
-                tempKingNine.pop();
-            }
-            if (kingFourteenthSpace) {
-                cells[indexOfBoardPiece - 14].removeEventListener("click", kingFourteenthMove);
-                tempKingFourteen.pop();
-            }
-            if (kingEighteenthSpace) {
-                cells[indexOfBoardPiece - 18].removeEventListener("click", kingEighteenthMove);
-                tempKingEighteen.pop();
-            }
-            changeData(indexOfBoardPiece, indexOfBoardPiece - 18, indexOfBoardPiece - 9);
-        }
-
-        if (turn === false && pieceId >= 12) {
-            document.getElementById(pieceId).remove();
-            cells[indexOfBoardPiece].innerHTML = "";
-            cells[indexOfBoardPiece + 18].innerHTML = `<span class="black-piece king" id="${pieceId}"></span>`;
-            blacksPieces = document.querySelectorAll("span");
-            document.getElementById(pieceId).addEventListener("click", getAvailableSpaces);
-            if (seventhSpace) {
-                cells[indexOfBoardPiece - 7].removeEventListener("click", seventhMove);
-                tempSeven.pop();
-            }
-            if (ninthSpace) {
-                cells[indexOfBoardPiece - 9].removeEventListener("click", ninthMove);
-                tempNine.pop();
-            }
-            if (fourteenthSpace) {
-                cells[indexOfBoardPiece - 14].removeEventListener("click", fourteenthMove);
-                tempFourteen.pop();
-            }
-            if (eighteenthSpace) {
-                cells[indexOfBoardPiece - 18].removeEventListener("click", eighteenthMove);
-                tempEighteen.pop();
-            }
-            if (kingSeventhSpace) {
-                cells[indexOfBoardPiece + 7].removeEventListener("click", eighteenthMove);
-                tempKingSeven.pop();
-            }
-            if (kingNinthSpace) {
-                cells[indexOfBoardPiece + 9].removeEventListener("click", eighteenthMove);
-                tempKingNine.pop();
-            }
-            if (kingFourteenthSpace) {
-                cells[indexOfBoardPiece + 14].removeEventListener("click", eighteenthMove);
-                tempKingFourteen.pop();
-            }
-            if (kingEighteenthSpace) {
-                cells[indexOfBoardPiece + 18].removeEventListener("click", eighteenthMove);
-                tempKingEighteen.pop();
-            }
-            changeData(indexOfBoardPiece, indexOfBoardPiece + 18, indexOfBoardPiece + 9);
-        }
-    }
-
-    // Changes the board states data on the back end
-    function changeData(indexOfBoardPiece, modifiedIndex, removePiece) {
-        board[indexOfBoardPiece] = null;
-        board[modifiedIndex] = parseInt(pieceId);
-        if (turn && pieceId < 12 && modifiedIndex >= 57) {
-            document.getElementById(pieceId).classList.add("king")
-        }
-        if (turn === false && pieceId >= 12 && modifiedIndex <= 7) {
-            document.getElementById(pieceId).classList.add("king");
-        }
-        if (removePiece) {
-            board[removePiece] = null;
-            if (turn && pieceId < 12) {
-                cells[removePiece].innerHTML = "";
-                blackScore--
-            }
-            if (turn === false && pieceId >= 12) {
-                cells[removePiece].innerHTML = "";
-                redScore--
-            }
-        }
-        isKing = false;
-        seventhSpace = false;
-        ninthSpace = false;
-        fourteenthSpace = false;
-        eighteenthSpace = false;
-        kingSeventhSpace = false;
-        kingNinthSpace = false;
-        kingFourteenthSpace = false;
-        kingEighteenthSpace = false;
-        changePlayer();
-    }
-
-    // Switches players turn
-    function changePlayer() {
+// restricts movement if the piece is a king
+function checkPieceConditions() {
+    if (selectedPiece.isKing) {
+        givePieceBorder();
+    } else {
         if (turn) {
-            turn = false;
-            redTurnText.style.color = "lightGrey";
-            blackTurntext.style.color = "black";
-        } else if (turn === false) {
-            turn = true;
-            blackTurntext.style.color = "lightGrey";
-            redTurnText.style.color = "black"
+            selectedPiece.minusSeventhSpace = false;
+            selectedPiece.minusNinthSpace = false;
+            selectedPiece.minusFourteenthSpace = false;
+            selectedPiece.minusEighteenthSpace = false;
+        } else {
+            selectedPiece.seventhSpace = false;
+            selectedPiece.ninthSpace = false;
+            selectedPiece.fourteenthSpace = false;
+            selectedPiece.eighteenthSpace = false;
         }
-        checkForWin();
+        givePieceBorder();
+    }
+}
+
+// gives the piece a green highlight for the user (showing its movable)
+function givePieceBorder() {
+    if (selectedPiece.seventhSpace || selectedPiece.ninthSpace || selectedPiece.fourteenthSpace || selectedPiece.eighteenthSpace
+    || selectedPiece.minusSeventhSpace || selectedPiece.minusNinthSpace || selectedPiece.minusFourteenthSpace || selectedPiece.minusEighteenthSpace) {
+        document.getElementById(selectedPiece.pieceId).style.border = "3px solid green";
+        giveCellsClick();
+    } else {
+        return;
+    }
+}
+
+// gives the cells on the board a 'click' bassed on the possible moves
+function giveCellsClick() {
+    if (selectedPiece.seventhSpace) {
+        cells[selectedPiece.indexOfBoardPiece + 7].setAttribute("onclick", "makeMove(7)");
+    }
+    if (selectedPiece.ninthSpace) {
+        cells[selectedPiece.indexOfBoardPiece + 9].setAttribute("onclick", "makeMove(9)");
+    }
+    if (selectedPiece.fourteenthSpace) {
+        cells[selectedPiece.indexOfBoardPiece + 14].setAttribute("onclick", "makeMove(14)");
+    }
+    if (selectedPiece.eighteenthSpace) {
+        cells[selectedPiece.indexOfBoardPiece + 18].setAttribute("onclick", "makeMove(18)");
+    }
+    if (selectedPiece.minusSeventhSpace) {
+        cells[selectedPiece.indexOfBoardPiece - 7].setAttribute("onclick", "makeMove(-7)");
+    }
+    if (selectedPiece.minusNinthSpace) {
+        cells[selectedPiece.indexOfBoardPiece - 9].setAttribute("onclick", "makeMove(-9)");
+    }
+    if (selectedPiece.minusFourteenthSpace) {
+        cells[selectedPiece.indexOfBoardPiece - 14].setAttribute("onclick", "makeMove(-14)");
+    }
+    if (selectedPiece.minusEighteenthSpace) {
+        cells[selectedPiece.indexOfBoardPiece - 18].setAttribute("onclick", "makeMove(-18)");
+    }
+    console.log(selectedPiece)
+}
+
+/* v when the cell is clicked v */
+
+// makes the move that was clicked
+function makeMove(number) {
+    document.getElementById(selectedPiece.pieceId).remove();
+    cells[selectedPiece.indexOfBoardPiece].innerHTML = "";
+    if (turn) {
+        if (selectedPiece.isKing) {
+            cells[selectedPiece.indexOfBoardPiece + number].innerHTML = `<p class="red-piece king" id="${selectedPiece.pieceId}"></p>`;
+            redsPieces = document.querySelectorAll("p");
+        } else {
+            cells[selectedPiece.indexOfBoardPiece + number].innerHTML = `<p class="red-piece" id="${selectedPiece.pieceId}"></p>`;
+            redsPieces = document.querySelectorAll("p");
+        }
+    } else {
+        if (selectedPiece.isKing) {
+            cells[selectedPiece.indexOfBoardPiece + number].innerHTML = `<span class="black-piece king" id="${selectedPiece.pieceId}"></span>`;
+            blacksPieces = document.querySelectorAll("span");
+        } else {
+            cells[selectedPiece.indexOfBoardPiece + number].innerHTML = `<span class="black-piece" id="${selectedPiece.pieceId}"></span>`;
+            blacksPieces = document.querySelectorAll("span");
+        }
     }
 
-    // Checks every turn for a win
-    function checkForWin() {
-        if (blackScore === 0) {
-            redTurnText.style.color = "black";
-            blackTurntext.textContent = "";
-            redTurnText.textContent = "RED WINS!";
-        } else if (redScore === 0) {
-            blackTurntext.style.color = "black";
-            redTurnText.textContent = "";
-            blackTurntext.textContent = "BLACK WINS!"
+    let indexOfPiece = selectedPiece.indexOfBoardPiece
+    if (number === 14 || number === -14 || number === 18 || number === -18) {
+        changeData(indexOfPiece, indexOfPiece + number, indexOfPiece + number / 2);
+    } else {
+        changeData(indexOfPiece, indexOfPiece + number);
+    }
+}
+
+// Changes the board states data on the back end
+function changeData(indexOfBoardPiece, modifiedIndex, removePiece) {
+    board[indexOfBoardPiece] = null;
+    board[modifiedIndex] = parseInt(selectedPiece.pieceId);
+    if (turn && selectedPiece.pieceId < 12 && modifiedIndex >= 57) {
+        document.getElementById(selectedPiece.pieceId).classList.add("king")
+    }
+    if (turn === false && selectedPiece.pieceId >= 12 && modifiedIndex <= 7) {
+        document.getElementById(selectedPiece.pieceId).classList.add("king");
+    }
+    if (removePiece) {
+        board[removePiece] = null;
+        if (turn && selectedPiece.pieceId < 12) {
+            cells[removePiece].innerHTML = "";
+            blackScore--
         }
-        givePiecesEventListeners();
+        if (turn === false && selectedPiece.pieceId >= 12) {
+            cells[removePiece].innerHTML = "";
+            redScore--
+        }
+    }
+    resetSelectedPieceProperties();
+    removeCellonclick();
+    removeEventListeners();
+}
+
+// removes the 'onClick' event listeners for pieces
+function removeEventListeners() {
+    if (turn) {
+        for (let i = 0; i < redsPieces.length; i++) {
+            redsPieces[i].removeEventListener("click", getPlayerPieces);
+        }
+    } else {
+        for (let i = 0; i < blacksPieces.length; i++) {
+            blacksPieces[i].removeEventListener("click", getPlayerPieces);
+        }
+    }
+    checkForWin();
+}
+
+// Checks for a win
+function checkForWin() {
+    if (blackScore === 0) {
+        redTurnText.style.color = "black";
+        blackTurntext.textContent = "";
+        redTurnText.textContent = "RED WINS!";
+    } else if (redScore === 0) {
+        blackTurntext.style.color = "black";
+        redTurnText.textContent = "";
+        blackTurntext.textContent = "BLACK WINS!";
+    }
+    changePlayer();
+}
+
+// Switches players turn
+function changePlayer() {
+    if (turn) {
+        turn = false;
+        for (let i = 0; i < redTurnText.length; i++) {
+            redTurnText[i].style.color = "lightGrey";
+            blackTurntext[i].style.color = "black";
+        }
+    } else {
+        turn = true;
+        for (let i = 0; i < blackTurntext.length; i++) {
+            blackTurntext[i].style.color = "lightGrey";
+            redTurnText[i].style.color = "black";
+        }
     }
     givePiecesEventListeners();
+}
+
+givePiecesEventListeners();
