@@ -50,7 +50,7 @@ let selectedPiece = {
 
 /*---------- Event Listeners ----------*/
 
-//initialize event listeners on pieces
+// initialize event listeners on pieces
 function givePiecesEventListeners() {
     if (turn) {
         for (let i = 0; i < redsPieces.length; i++) {
@@ -92,7 +92,7 @@ function resetBorders() {
     getSelectedPiece();
 }
 
-//resets selected piece properties
+// resets selected piece properties
 function resetSelectedPieceProperties() {
     selectedPiece.pieceId = -1;
     selectedPiece.pieceId = -1;
@@ -107,14 +107,14 @@ function resetSelectedPieceProperties() {
     selectedPiece.minusEighteenthSpace = false;
 }
 
-// Gets ID and index of the board cell its on
+// gets ID and index of the board cell its on
 function getSelectedPiece() {
     selectedPiece.pieceId = parseInt(event.target.id);
     selectedPiece.indexOfBoardPiece = findPiece(selectedPiece.pieceId);
     isPieceKing();
 }
 
-// Checks if selected piece is a king
+// checks if selected piece is a king
 function isPieceKing() {
     if (document.getElementById(selectedPiece.pieceId).classList.contains("king")) {
         selectedPiece.isKing = true;
