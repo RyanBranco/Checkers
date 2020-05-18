@@ -238,7 +238,6 @@ function giveCellsClick() {
     if (selectedPiece.minusEighteenthSpace) {
         cells[selectedPiece.indexOfBoardPiece - 18].setAttribute("onclick", "makeMove(-18)");
     }
-    console.log(selectedPiece)
 }
 
 /* v when the cell is clicked v */
