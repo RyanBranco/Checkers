@@ -29,7 +29,6 @@ div {
 }
 
 td {
-    position: relative;
     text-align: center;
     background-color: #BA7A3A;
     width: 65px;
@@ -51,30 +50,29 @@ td {
 }
 
 .black-piece {
-    position: relative;
-    color: white;
-    margin-right: auto;
-    margin-left: auto;
     width: 20px;
     height: 20px;
-    background-color: black;
     padding: 12px;
+    background-color: black;
     border: 1px solid white;
     border-radius: 50px;
 }
 
 .red-piece {
-    margin: 0 auto;
-    position: relative;
-    color: white;
-    margin-right: auto;
-    margin-left: auto;
     width: 20px;
     height: 20px;
-    background-color: red;
     padding: 12px;
+    background-color: red;
     border: 1px solid white;
     border-radius: 50px;
+}
+
+.king.red-piece {
+    background-color: orange;
+}
+
+.king.black-piece {
+    background-color: purple;
 }
 
 p {
@@ -89,14 +87,6 @@ p {
 
 span {
     display: inline-block;
-}
-
-.king.red-piece {
-    background-color: orange;
-}
-
-.king.black-piece {
-    background-color: purple;
 }
 
 @media screen and (max-width: 560px) {
