@@ -19,7 +19,7 @@ let findPiece = function (pieceId) {
     return board.indexOf(parsed);
 };
 
-// html referenes
+// DOM referenes
 const cells = document.querySelectorAll("td");
 let redsPieces = document.querySelectorAll("p");
 let blacksPieces = document.querySelectorAll("span")
