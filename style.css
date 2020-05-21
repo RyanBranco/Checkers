@@ -28,6 +28,14 @@ div {
     background-color: #F0D2B4;
 }
 
+td {
+    position: relative;
+    text-align: center;
+    background-color: #BA7A3A;
+    width: 65px;
+    height: 65px;
+}
+
 .red-turn-text {
     text-align: center;
     color: black;
@@ -67,14 +75,6 @@ div {
     padding: 12px;
     border: 1px solid white;
     border-radius: 50px;
-}
-
-td {
-    position: relative;
-    text-align: center;
-    background-color: #BA7A3A;
-    width: 65px;
-    height: 65px;
 }
 
 p {
