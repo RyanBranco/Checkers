@@ -126,16 +126,20 @@ function isPieceKing() {
 
 // gets the moves that the selected piece can make
 function getAvailableSpaces() {
-    if (board[selectedPiece.indexOfBoardPiece + 7] === null && cells[selectedPiece.indexOfBoardPiece + 7].classList.contains("noPieceHere") !== true) {
+    if (board[selectedPiece.indexOfBoardPiece + 7] === null && 
+        cells[selectedPiece.indexOfBoardPiece + 7].classList.contains("noPieceHere") !== true) {
         selectedPiece.seventhSpace = true;
     }
-    if (board[selectedPiece.indexOfBoardPiece + 9] === null && cells[selectedPiece.indexOfBoardPiece + 9].classList.contains("noPieceHere") !== true) {
+    if (board[selectedPiece.indexOfBoardPiece + 9] === null && 
+        cells[selectedPiece.indexOfBoardPiece + 9].classList.contains("noPieceHere") !== true) {
         selectedPiece.ninthSpace = true;
     }
-    if (board[selectedPiece.indexOfBoardPiece - 7] === null && cells[selectedPiece.indexOfBoardPiece - 7].classList.contains("noPieceHere") !== true) {
+    if (board[selectedPiece.indexOfBoardPiece - 7] === null && 
+        cells[selectedPiece.indexOfBoardPiece - 7].classList.contains("noPieceHere") !== true) {
         selectedPiece.minusSeventhSpace = true;
     }
-    if (board[selectedPiece.indexOfBoardPiece - 9] === null && cells[selectedPiece.indexOfBoardPiece - 9].classList.contains("noPieceHere") !== true) {
+    if (board[selectedPiece.indexOfBoardPiece - 9] === null && 
+        cells[selectedPiece.indexOfBoardPiece - 9].classList.contains("noPieceHere") !== true) {
         selectedPiece.minusNinthSpace = true;
     }
     checkAvailableJumpSpaces();
@@ -144,37 +148,45 @@ function getAvailableSpaces() {
 // gets the moves that the selected piece can jump
 function checkAvailableJumpSpaces() {
     if (turn) {
-        if (board[selectedPiece.indexOfBoardPiece + 14] === null && cells[selectedPiece.indexOfBoardPiece + 14].classList.contains("noPieceHere") !== true
+        if (board[selectedPiece.indexOfBoardPiece + 14] === null 
+        && cells[selectedPiece.indexOfBoardPiece + 14].classList.contains("noPieceHere") !== true
         && board[selectedPiece.indexOfBoardPiece + 7] >= 12) {
             selectedPiece.fourteenthSpace = true;
         }
-        if (board[selectedPiece.indexOfBoardPiece + 18] === null && cells[selectedPiece.indexOfBoardPiece + 18].classList.contains("noPieceHere") !== true
+        if (board[selectedPiece.indexOfBoardPiece + 18] === null 
+        && cells[selectedPiece.indexOfBoardPiece + 18].classList.contains("noPieceHere") !== true
         && board[selectedPiece.indexOfBoardPiece + 9] >= 12) {
             selectedPiece.eighteenthSpace = true;
         }
-        if (board[selectedPiece.indexOfBoardPiece - 14] === null && cells[selectedPiece.indexOfBoardPiece - 14].classList.contains("noPieceHere") !== true
+        if (board[selectedPiece.indexOfBoardPiece - 14] === null 
+        && cells[selectedPiece.indexOfBoardPiece - 14].classList.contains("noPieceHere") !== true
         && board[selectedPiece.indexOfBoardPiece - 7] >= 12) {
             selectedPiece.minusFourteenthSpace = true;
         }
-        if (board[selectedPiece.indexOfBoardPiece - 18] === null && cells[selectedPiece.indexOfBoardPiece - 18].classList.contains("noPieceHere") !== true
+        if (board[selectedPiece.indexOfBoardPiece - 18] === null 
+        && cells[selectedPiece.indexOfBoardPiece - 18].classList.contains("noPieceHere") !== true
         && board[selectedPiece.indexOfBoardPiece - 9] >= 12) {
             selectedPiece.minusEighteenthSpace = true;
         }
     } else {
-        if (board[selectedPiece.indexOfBoardPiece + 14] === null && cells[selectedPiece.indexOfBoardPiece + 14].classList.contains("noPieceHere") !== true
+        if (board[selectedPiece.indexOfBoardPiece + 14] === null 
+        && cells[selectedPiece.indexOfBoardPiece + 14].classList.contains("noPieceHere") !== true
         && board[selectedPiece.indexOfBoardPiece + 7] < 12 && board[selectedPiece.indexOfBoardPiece + 7] !== null) {
             selectedPiece.fourteenthSpace = true;
         }
-        if (board[selectedPiece.indexOfBoardPiece + 18] === null && cells[selectedPiece.indexOfBoardPiece + 18].classList.contains("noPieceHere") !== true
+        if (board[selectedPiece.indexOfBoardPiece + 18] === null 
+        && cells[selectedPiece.indexOfBoardPiece + 18].classList.contains("noPieceHere") !== true
         && board[selectedPiece.indexOfBoardPiece + 9] < 12 && board[selectedPiece.indexOfBoardPiece + 9] !== null) {
             selectedPiece.eighteenthSpace = true;
         }
         if (board[selectedPiece.indexOfBoardPiece - 14] === null && cells[selectedPiece.indexOfBoardPiece - 14].classList.contains("noPieceHere") !== true
-        && board[selectedPiece.indexOfBoardPiece - 7] < 12 && board[selectedPiece.indexOfBoardPiece - 7] !== null) {
+        && board[selectedPiece.indexOfBoardPiece - 7] < 12 
+        && board[selectedPiece.indexOfBoardPiece - 7] !== null) {
             selectedPiece.minusFourteenthSpace = true;
         }
         if (board[selectedPiece.indexOfBoardPiece - 18] === null && cells[selectedPiece.indexOfBoardPiece - 18].classList.contains("noPieceHere") !== true
-        && board[selectedPiece.indexOfBoardPiece - 9] < 12&& board[selectedPiece.indexOfBoardPiece - 9] !== null) {
+        && board[selectedPiece.indexOfBoardPiece - 9] < 12
+        && board[selectedPiece.indexOfBoardPiece - 9] !== null) {
             selectedPiece.minusEighteenthSpace = true;
         }
     }
