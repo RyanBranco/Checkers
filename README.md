@@ -1,16 +1,10 @@
 # Checkers
-Checkers browser game for player vs. player
+Checkers browser game for co-op player vs. player. This project is perfect to replicate if you want to better understand the basics of JS and how it talks to HTML (the DOM).
 
-* This was written using:
+* Written using vanilla:
   * HTML
   * CSS
   * JavaScript
-
-* Future improvments:
-  * Double jumps
-  * Make wins more extravagant
-  * Create a reset button if you want to play again (instead of refreshing)
-  * Create a player vs. CPU mode
 
 [Click here if you would like to play the game](https://ryanbranco.github.io/Checkers/)
 
